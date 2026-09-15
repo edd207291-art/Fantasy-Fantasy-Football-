@@ -16,7 +16,7 @@ export default function Menu({
   activePage = MenuItem.Home,
   onNavigate,
 }: MenuProps) {
-  const menuItems: Array<MenuItem> = [
+  const menuItems: MenuItem[] = [
     MenuItem.Home,
     MenuItem.Clubs,
     MenuItem.Matchs,
