@@ -1,6 +1,7 @@
 import { Club } from "@/types/club";
 import { Player, Position } from "@/types/player";
 import { v4 as uuidv4 } from "uuid";
+import { generateClubName } from "./generateClubName";
 import { generatePlayer } from "./generatePlayer";
 
 const NUMBER_OF_GOALKEEPERS = 2;
@@ -10,7 +11,9 @@ const NUMBER_OF_FORWARDS = 4;
 
 export const generateClubWithPlayers = (
   onPlayerGenerated?: (player: Player) => void,
+  existingClubNames: ReadonlySet<string> = new Set(),
 ): Club => {
+  //club initial players
   const players = [];
   const createPlayer = (options: Partial<Player>) => {
     const player = generatePlayer(options);
@@ -50,13 +53,13 @@ export const generateClubWithPlayers = (
       }),
     );
   }
+
+  const clubName = generateClubName(existingClubNames);
+
   return {
     id: uuidv4(),
 
-    name: "Club " + Math.floor(Math.random() * 1000),
+    name: clubName,
     playerIds: players.map((player) => player.id),
   };
 };
-
-export const generateClubs = (count = 10): Club[] =>
-  Array.from({ length: count }, generateClubWithPlayers);

@@ -4,7 +4,7 @@ import { generateClubWithPlayers } from "@/scripts/generateClub";
 import { Club } from "@/types/club";
 import type { Player } from "@/types/player";
 import type { AppThunk, RootState } from ".";
-import { setPlayers } from "./playersSlice";
+import { addPlayer } from "./playersSlice";
 
 type ClubsState = {
   clubs: Club[];
@@ -18,13 +18,16 @@ const clubsSlice = createSlice({
   name: "clubsSlice",
   initialState,
   reducers: {
+    addClub: (state, action: { payload: Club }) => {
+      state.clubs.push(action.payload);
+    },
     setClubs: (state, action: { payload: Club[] }) => {
       state.clubs = action.payload;
     },
   },
 });
 
-export const { setClubs } = clubsSlice.actions;
+export const { addClub, setClubs } = clubsSlice.actions;
 
 export const getPlayersInClub = (
   state: RootState,
@@ -41,16 +44,19 @@ export const getPlayersInClub = (
   );
 };
 
-export const initializeClubs = (): AppThunk => (dispatch) => {
-  const allPlayers: Player[] = [];
-  const allClubs: Club[] = [];
-
+export const initializeClubs = (): AppThunk => (dispatch, getState) => {
   for (let i = 0; i < 10; i++) {
-    allClubs.push(generateClubWithPlayers((player) => allPlayers.push(player)));
-  }
+    //need to
+    const existingClubNames = new Set(
+      getState().clubs.clubs.map((existingClub) => existingClub.name),
+    );
 
-  dispatch(setClubs(allClubs));
-  dispatch(setPlayers(allPlayers));
+    const club = generateClubWithPlayers((player) => {
+      dispatch(addPlayer(player));
+    }, existingClubNames);
+
+    dispatch(addClub(club));
+  }
 };
 
 export default clubsSlice.reducer;
