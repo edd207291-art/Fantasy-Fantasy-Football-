@@ -19,6 +19,7 @@ export default function MatchesScreen() {
           columns={[
             { key: "home", label: "Home", width: 192 },
             { key: "away", label: "Away", width: 192 },
+            { key: "week", label: "Week", width: 64 },
             { key: "winner", label: "Winner", width: 192 },
           ]}
           data={matches}
@@ -30,7 +31,9 @@ export default function MatchesScreen() {
                 ? (clubNames.get(match.homeClubId) ?? "Unknown club")
                 : column.key === "away"
                   ? (clubNames.get(match.awayClubId) ?? "Unknown club")
-                  : (clubNames.get(match.winnerClubId ?? "") ?? "Draw")}
+                  : column.key === "week"
+                    ? match.week.toString()
+                    : clubNames.get(match.result?.winnerClubId ?? "")}
             </Text>
           )}
         />

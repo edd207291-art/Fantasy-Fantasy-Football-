@@ -2,5 +2,9 @@ export type Match = {
   id: string;
   homeClubId: string;
   awayClubId: string;
-  winnerClubId: string | null;
+  season: number;
+  week: number;
+  result?: {
+    winnerClubId: string | null;
+  };
 };

@@ -44,19 +44,20 @@ export const getPlayersInClub = (
   );
 };
 
-export const initializeClubs = (): AppThunk => (dispatch, getState) => {
-  for (let i = 0; i < 10; i++) {
-    //need to
-    const existingClubNames = new Set(
-      getState().clubs.clubs.map((existingClub) => existingClub.name),
-    );
+export const initializeClubs =
+  (numberOfClubs: number): AppThunk =>
+  (dispatch, getState) => {
+    for (let i = 0; i < numberOfClubs; i++) {
+      const existingClubNames = new Set(
+        getState().clubs.clubs.map((existingClub) => existingClub.name),
+      );
 
-    const club = generateClubWithPlayers((player) => {
-      dispatch(addPlayer(player));
-    }, existingClubNames);
+      const club = generateClubWithPlayers((player) => {
+        dispatch(addPlayer(player));
+      }, existingClubNames);
 
-    dispatch(addClub(club));
-  }
-};
+      dispatch(addClub(club));
+    }
+  };
 
 export default clubsSlice.reducer;
