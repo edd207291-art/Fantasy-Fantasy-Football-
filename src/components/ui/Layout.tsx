@@ -1,10 +1,13 @@
 import Menu, { MenuItem } from "@/components/ui/Menu";
+import { resetStore } from "@/store";
+import { useAppDispatch } from "@/store/hooks";
 import { usePathname, useRouter } from "expo-router";
 import { View } from "react-native";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   let activePage: MenuItem | undefined;
 
@@ -40,9 +43,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const handleReset = () => {
+    dispatch(resetStore());
+  };
+
   return (
     <View className="flex-1 bg-slate-950">
-      <Menu activePage={activePage} onNavigate={handleNavigate} />
+      <Menu
+        activePage={activePage}
+        onNavigate={handleNavigate}
+        onReset={handleReset}
+      />
 
       <View className="flex-1 items-center justify-center px-6">
         {children}

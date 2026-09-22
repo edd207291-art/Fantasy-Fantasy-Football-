@@ -10,11 +10,13 @@ export enum MenuItem {
 type MenuProps = {
   activePage?: MenuItem;
   onNavigate?: (page: MenuItem) => void;
+  onReset?: () => void;
 };
 
 export default function Menu({
   activePage = MenuItem.Home,
   onNavigate,
+  onReset,
 }: MenuProps) {
   const menuItems: MenuItem[] = [
     MenuItem.Home,
@@ -51,6 +53,14 @@ export default function Menu({
             </Pressable>
           );
         })}
+        <Pressable
+          onPress={onReset}
+          accessibilityRole="button"
+          accessibilityLabel="Clear Redux state"
+          className="rounded-lg bg-red-600 px-4 py-2"
+        >
+          <Text className="font-medium text-white">Reset</Text>
+        </Pressable>
       </View>
     </View>
   );
