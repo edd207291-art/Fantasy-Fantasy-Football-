@@ -1,5 +1,6 @@
 import Layout from "@/components/ui/Layout";
 import Table from "@/components/ui/Table";
+import { getBestPosition } from "@/scripts/Player/getBestPosition";
 import { useAppSelector } from "@/store/hooks";
 import { Player } from "@/types/player";
 import { Text, View } from "react-native";
@@ -16,8 +17,8 @@ export default function PlayersScreen() {
         <Table
           columns={[
             { key: "name", label: "Name", width: 256 },
-            { key: "position", label: "Position", width: 160 },
-            { key: "rating", label: "Rating", width: 128 },
+            { key: "position", label: "Best Position", width: 160 },
+            { key: "rating", label: "Rating", width: 160 },
           ]}
           data={players}
           getRowKey={(player: Player) => player.id}
@@ -26,8 +27,10 @@ export default function PlayersScreen() {
               {column.key === "name"
                 ? player.name
                 : column.key === "position"
-                  ? player.position
-                  : player.rating}
+                  ? getBestPosition(player).position
+                  : column.key === "rating"
+                    ? getBestPosition(player).rating.toString()
+                    : ""}
             </Text>
           )}
         />

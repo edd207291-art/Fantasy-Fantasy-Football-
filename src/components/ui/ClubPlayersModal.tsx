@@ -1,4 +1,5 @@
 import Table from "@/components/ui/Table";
+import { getBestPosition } from "@/scripts/Player/getBestPosition";
 import { Club } from "@/types/club";
 import { Player } from "@/types/player";
 import { Modal, Pressable, Text, View } from "react-native";
@@ -48,8 +49,10 @@ export default function ClubPlayersModal({
                 {column.key === "name"
                   ? player.name
                   : column.key === "position"
-                    ? player.position
-                    : player.rating}
+                    ? getBestPosition(player).position
+                    : column.key === "rating"
+                      ? getBestPosition(player).rating.toString()
+                      : ""}
               </Text>
             )}
           />

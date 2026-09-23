@@ -1,18 +1,22 @@
 import { store } from "@/store";
 import { getPlayersInClub } from "@/store/clubsSlice";
 import { Match } from "@/types/match";
-import { generateTeam } from "./generateTeam";
+import { generateTeam } from "./Team/generateTeam";
 
 export const playMatch = (match: Match): Match => {
   const state = store.getState();
   const homeClubPlayers = getPlayersInClub(state, match.homeClubId);
-  const homeTeam = generateTeam(homeClubPlayers);
+  const homeTeam = Object.values(
+    generateTeam(homeClubPlayers).teamPlayers,
+  ).flat();
   const homeTeamRating = homeTeam.reduce(
     (sum, player) => sum + player.rating,
     0,
   );
   const awayClubPlayers = getPlayersInClub(state, match.awayClubId);
-  const awayTeam = generateTeam(awayClubPlayers);
+  const awayTeam = Object.values(
+    generateTeam(awayClubPlayers).teamPlayers,
+  ).flat();
   const awayTeamRating = awayTeam.reduce(
     (sum, player) => sum + player.rating,
     0,
