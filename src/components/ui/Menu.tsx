@@ -5,6 +5,7 @@ export enum MenuItem {
   Clubs = "Clubs",
   Matchs = "Matchs",
   Players = "Players",
+  Game = "Game",
 }
 
 type MenuProps = {
@@ -23,6 +24,7 @@ export default function Menu({
     MenuItem.Clubs,
     MenuItem.Matchs,
     MenuItem.Players,
+    MenuItem.Game,
   ];
 
   return (

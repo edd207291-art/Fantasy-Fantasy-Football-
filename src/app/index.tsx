@@ -17,7 +17,7 @@ export default function HomeScreen() {
         Season {season} - Current Week {week}
       </BodyText>
       <TouchableOpacity
-        onPress={() => initializeLeague(dispatch, 10)}
+        onPress={() => initializeLeague(dispatch, 2)}
         className="items-center"
       >
         <MutedText>Initialize League</MutedText>

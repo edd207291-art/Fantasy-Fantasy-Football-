@@ -1,5 +1,5 @@
 import { Match } from "@/types/match";
-import { playMatch } from "./playMatch";
+import { playMatch } from "./Match/playMatch";
 
 export const playWeeksMatchs = (
   matches: Match[],

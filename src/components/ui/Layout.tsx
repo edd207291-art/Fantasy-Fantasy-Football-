@@ -24,6 +24,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     case "/players":
       activePage = MenuItem.Players;
       break;
+    case "/game":
+      activePage = MenuItem.Game;
+      break;
   }
 
   const handleNavigate = (page: MenuItem) => {
@@ -39,6 +42,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         break;
       case MenuItem.Home:
         router.push("/");
+        break;
+      case MenuItem.Game:
+        router.push("/game");
         break;
     }
   };
