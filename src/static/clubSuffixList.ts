@@ -16,6 +16,5 @@ export const clubSuffixes = [
   "Palace",
   "Rangers",
   "Saints",
-  "Spurs",
   "Vale",
 ];

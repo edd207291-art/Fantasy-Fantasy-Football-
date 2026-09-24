@@ -2,7 +2,7 @@ import Menu, { MenuItem } from "@/components/ui/Menu";
 import { resetStore } from "@/store";
 import { useAppDispatch } from "@/store/hooks";
 import { usePathname, useRouter } from "expo-router";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -55,9 +55,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         onReset={handleReset}
       />
 
-      <View className="flex-1 items-center justify-center px-6">
-        {children}
-      </View>
+      <ScrollView
+        className="flex-1 px-6"
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={true}
+      >
+        <View className="w-full items-center">{children}</View>
+      </ScrollView>
     </View>
   );
 }

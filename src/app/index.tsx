@@ -1,8 +1,9 @@
 import Layout from "@/components/ui/Layout";
+import { BodyText, MutedText, PageHeading } from "@/components/ui/Typography";
 import { initializeLeague } from "@/scripts/initzlizeLeague";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { playCurrentWeek } from "@/store/matchesSlice";
-import { Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import "../global.css";
 
 export default function HomeScreen() {
@@ -11,23 +12,23 @@ export default function HomeScreen() {
 
   return (
     <Layout>
-      <Text className="mb-2 text-3xl font-bold text-white">Home Page</Text>
-      <Text className="mb-4 text-base text-slate-300">
+      <PageHeading className="mb-2">Home Page</PageHeading>
+      <BodyText className="mb-4">
         Season {season} - Current Week {week}
-      </Text>
+      </BodyText>
       <TouchableOpacity
         onPress={() => initializeLeague(dispatch, 10)}
         className="items-center"
       >
-        <Text className="text-base text-slate-400">Initialize League</Text>
+        <MutedText>Initialize League</MutedText>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => dispatch(playCurrentWeek())}
         className="items-center"
       >
-        <Text className="text-base text-slate-400">
+        <MutedText>
           Play This Weeks Matches
-        </Text>
+        </MutedText>
       </TouchableOpacity>
     </Layout>
   );

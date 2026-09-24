@@ -9,6 +9,7 @@ type TeamPositions = {
 };
 
 interface ITeam {
+  formation: string;
   teamPlayers: TeamPositions;
 }
 
@@ -49,15 +50,15 @@ const getFormationRating = (
   }
 
   const defenderRating = selectedDefenders.reduce(
-    (sum, player) => sum + player.rating,
+    (sum, player) => sum + getBestPosition(player).rating,
     0,
   );
   const midfielderRating = selectedMidfielders.reduce(
-    (sum, player) => sum + player.rating,
+    (sum, player) => sum + getBestPosition(player).rating,
     0,
   );
   const forwardRating = selectedForwards.reduce(
-    (sum, player) => sum + player.rating,
+    (sum, player) => sum + getBestPosition(player).rating,
     0,
   );
 
@@ -93,7 +94,9 @@ export const generateTeam = (clubPlayers: Player[]): ITeam => {
   // is a bug if no goalkeepers. In future when gen teams will gen players with a preferance for positions.
   const goalKeepers = playersByPosition[Position.Goalkeeper];
   const bestGoalkeeper = goalKeepers.reduce((prev, current) =>
-    prev.rating > current.rating ? prev : current,
+    getBestPosition(prev).rating > getBestPosition(current).rating
+      ? prev
+      : current,
   );
 
   const defenders = playersByPosition[Position.Defender];
@@ -134,18 +137,21 @@ export const generateTeam = (clubPlayers: Player[]): ITeam => {
   );
 
   const bestFormation = [
-    formation422,
-    formation433,
-    formation343,
-    formation352,
-  ].reduce((prev, current) => (prev.rating > current.rating ? prev : current));
+    { name: "4-2-2", result: formation422 },
+    { name: "4-3-3", result: formation433 },
+    { name: "3-4-3", result: formation343 },
+    { name: "3-5-2", result: formation352 },
+  ].reduce((prev, current) =>
+    prev.result.rating > current.result.rating ? prev : current,
+  );
 
   return {
+    formation: bestFormation.name,
     teamPlayers: {
       Goalkeeper: bestGoalkeeper,
-      Defenders: bestFormation.players.defenders,
-      Midfielders: bestFormation.players.midfielders,
-      Forwards: bestFormation.players.forwards,
+      Defenders: bestFormation.result.players.defenders,
+      Midfielders: bestFormation.result.players.midfielders,
+      Forwards: bestFormation.result.players.forwards,
     },
   };
 };

@@ -5,9 +5,13 @@ import { v4 as uuidv4 } from "uuid";
 
 const generatePositionPreferences = (position: Position): PositionRating => {
   const preferences = {} as PositionRating;
+  const highestPreference = Math.floor(Math.random() * 100) + 1;
 
-  Object.values(Position).forEach((position) => {
-    preferences[position] = Math.floor(Math.random() * 101);
+  Object.values(Position).forEach((currentPosition) => {
+    preferences[currentPosition] =
+      currentPosition === position
+        ? highestPreference
+        : Math.floor(Math.random() * highestPreference);
   });
 
   return preferences;
