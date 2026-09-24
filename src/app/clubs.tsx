@@ -32,9 +32,7 @@ export default function ClubsScreen() {
               }
               className="rounded bg-blue-600 px-3 py-1"
             >
-              <ButtonText className="text-center">
-                View players
-              </ButtonText>
+              <ButtonText className="text-center">View players</ButtonText>
             </Pressable>
           ) : (
             <MutedText>

@@ -13,9 +13,7 @@ export default function PlayersCard({ players }: PlayersCardProps) {
     <Card>
       <View className="mb-4">
         <Heading>Players</Heading>
-        <Subheading>
-          Current squad ratings and positions
-        </Subheading>
+        <Subheading>Current squad ratings and positions</Subheading>
       </View>
 
       <PlayersTable players={players} />

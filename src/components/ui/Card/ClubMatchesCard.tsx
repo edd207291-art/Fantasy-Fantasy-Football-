@@ -29,15 +29,11 @@ export default function ClubMatchesCard({
     <Card>
       <View className="mb-4">
         <Heading>Club matches</Heading>
-        <Subheading>
-          Match results for this club
-        </Subheading>
+        <Subheading>Match results for this club</Subheading>
       </View>
 
       {clubMatches.length === 0 ? (
-        <MutedText>
-          No matches scheduled yet.
-        </MutedText>
+        <MutedText>No matches scheduled yet.</MutedText>
       ) : (
         <View className="gap-3">
           {clubMatches.map((match) => {
@@ -67,9 +63,7 @@ export default function ClubMatchesCard({
                   <BodyText className="font-semibold text-slate-200">
                     {`${isHome ? "Home" : "Away"} vs. ${opponentName}`}
                   </BodyText>
-                  <Subheading>
-                    Week {match.week}
-                  </Subheading>
+                  <Subheading>Week {match.week}</Subheading>
                 </View>
                 <Text className={`font-semibold ${statusClassName}`}>
                   {status}

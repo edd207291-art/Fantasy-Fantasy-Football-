@@ -26,9 +26,7 @@ export default function HomeScreen() {
         onPress={() => dispatch(playCurrentWeek())}
         className="items-center"
       >
-        <MutedText>
-          Play This Weeks Matches
-        </MutedText>
+        <MutedText>Play This Weeks Matches</MutedText>
       </TouchableOpacity>
     </Layout>
   );

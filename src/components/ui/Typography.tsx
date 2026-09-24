@@ -42,17 +42,13 @@ export function SectionLabel({ children, className = "" }: TypographyProps) {
 
 export function BodyText({ children, className = "" }: TypographyProps) {
   return (
-    <Text className={`text-base text-slate-300 ${className}`}>
-      {children}
-    </Text>
+    <Text className={`text-base text-slate-300 ${className}`}>{children}</Text>
   );
 }
 
 export function MutedText({ children, className = "" }: TypographyProps) {
   return (
-    <Text className={`text-base text-slate-400 ${className}`}>
-      {children}
-    </Text>
+    <Text className={`text-base text-slate-400 ${className}`}>{children}</Text>
   );
 }
 
