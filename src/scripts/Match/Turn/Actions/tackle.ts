@@ -1,6 +1,6 @@
 import { Pitch, PitchCoordinates, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
-import { versusCheck } from "../Checks/versusCheck";
+import { versusCheck } from "../../Checks/versusCheck";
 import { canTackle } from "./Utils/canTackle";
 import { findBallCarrierZone } from "./Utils/findBallCarrierZone";
 import { moveTowardCoordinate } from "./Utils/moveTowardCoordinate";
