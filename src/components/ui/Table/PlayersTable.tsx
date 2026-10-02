@@ -1,5 +1,5 @@
 import Table from "@/components/ui/Table/Table";
-import { getBestPosition } from "@/scripts/Player/getBestPosition";
+import { getPlayerRating } from "@/scripts/Player/getPlayerRating";
 import type { Player } from "@/types/player";
 import { Text } from "react-native";
 
@@ -23,9 +23,9 @@ export default function PlayersTable({ players }: PlayersTableProps) {
           {column.key === "name"
             ? player.name
             : column.key === "position"
-              ? getBestPosition(player).position
+              ? player.positionPreference
               : column.key === "rating"
-                ? getBestPosition(player).rating.toString()
+                ? getPlayerRating(player)
                 : ""}
         </Text>
       )}

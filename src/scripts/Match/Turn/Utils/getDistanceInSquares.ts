@@ -3,4 +3,4 @@ import { PitchCoordinates } from "@/types/pitch";
 export const getDistanceInSquares = (
   from: PitchCoordinates,
   to: PitchCoordinates,
-): number => Math.max(Math.abs(to.x - from.x), Math.abs(to.y - from.y));
+): number => Math.abs(to.x - from.x) + Math.abs(to.y - from.y);

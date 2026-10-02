@@ -1,7 +1,7 @@
 import { Pitch, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
 import { movePlayer } from "./Actions/moving";
-import { getDistanceInSquares } from "./Actions/Utils/getDistanceInSquares";
+import { getDistanceInSquares } from "./Utils/getDistanceInSquares";
 import { ActivationResult } from "./activatePlayer";
 
 //to and stay in own goal area

@@ -1,50 +1,33 @@
 import { generateTeam } from "@/scripts/Team/generateTeam";
 import { getPlayersInClub } from "@/store/clubsSlice";
 import { Pitch } from "@/types/pitch";
-import { Player } from "@/types/player";
 import { createPitch, PITCH_LENGTH, PITCH_WIDTH } from "./createPitch";
-
-const getPitchXPositions = (playerCount: number): number[] => {
-  if (playerCount <= 1) {
-    return [Math.floor(PITCH_WIDTH / 2)];
-  }
-
-  const spacing = Math.floor((PITCH_WIDTH - 8) / (playerCount - 1));
-
-  return Array.from({ length: playerCount }, (_, index) => {
-    const x = 4 + index * spacing;
-    return Math.min(x, PITCH_WIDTH - 5);
-  });
-};
 
 const placeTeamOnPitch = (
   pitch: Pitch,
   teamPlayers: ReturnType<typeof generateTeam>["teamPlayers"],
   isHomeTeam: boolean,
 ) => {
-  const goalKeeperY = isHomeTeam ? 1 : PITCH_LENGTH - 2;
-  const goalKeeperX = Math.floor(PITCH_WIDTH / 2);
+  const goalkeepersRow = isHomeTeam ? 2 : PITCH_LENGTH - 3;
+  const defendersRow = isHomeTeam ? 10 : PITCH_LENGTH - 11;
+  const midfieldersRow = isHomeTeam ? 21 : PITCH_LENGTH - 22;
+  const forwardsRow = isHomeTeam ? 30 : PITCH_LENGTH - 31;
 
-  pitch[goalKeeperY][goalKeeperX].playerId = teamPlayers.Goalkeeper.id;
-
-  const placeLine = (
-    players: Player[],
-    startingY: number,
-    laneOffset: number,
+  const placePlayers = (
+    players: ReturnType<typeof generateTeam>["teamPlayers"]["Defenders"],
+    row: number,
   ) => {
-    const xPositions = getPitchXPositions(players.length);
     players.forEach((player, index) => {
-      const x = xPositions[index] ?? xPositions[xPositions.length - 1];
-      const y = isHomeTeam
-        ? startingY + laneOffset * index
-        : PITCH_LENGTH - 1 - (startingY + laneOffset * index);
-      pitch[y][x].playerId = player.id;
+      const x = Math.round(((index + 1) * PITCH_WIDTH) / (players.length + 1));
+      pitch[row][x].playerId = player.id;
     });
   };
 
-  placeLine(teamPlayers.Defenders, 7, 2);
-  placeLine(teamPlayers.Midfielders, 22, 2);
-  placeLine(teamPlayers.Forwards, 35, 2);
+  const goalkeeperX = Math.floor(PITCH_WIDTH / 2);
+  pitch[goalkeepersRow][goalkeeperX].playerId = teamPlayers.Goalkeeper.id;
+  placePlayers(teamPlayers.Defenders, defendersRow);
+  placePlayers(teamPlayers.Midfielders, midfieldersRow);
+  placePlayers(teamPlayers.Forwards, forwardsRow);
 };
 
 export const setUpPitchForMatch = (

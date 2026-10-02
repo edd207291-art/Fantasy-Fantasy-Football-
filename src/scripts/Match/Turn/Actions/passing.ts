@@ -1,9 +1,9 @@
 import { Pitch, PitchCoordinates, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
 import { performCheck } from "../../Checks/performCheck";
-import { getDistanceInSquares } from "./Utils/getDistanceInSquares";
-import { getRandomOffset } from "./Utils/getRandomOffset";
-import { moveTowardCoordinate } from "./Utils/moveTowardCoordinate";
+import { getDistanceInSquares } from "../Utils/getDistanceInSquares";
+import { getRandomOffset } from "../Utils/getRandomOffset";
+import { moveTowardCoordinate } from "../Utils/moveTowardCoordinate";
 
 export type PassRange = "short" | "mid" | "long";
 

@@ -1,8 +1,9 @@
 import { Pitch, PitchZone } from "@/types/pitch";
 
+export const ZONE_TO_FEET_RATIO = 5;
+
 export const PITCH_WIDTH = 44;
 export const PITCH_LENGTH = 69;
-export const SPACE_SIZE_FEET = 5;
 
 const GOAL_WIDTH = 5;
 const GOAL_AREA_WIDTH = 11;

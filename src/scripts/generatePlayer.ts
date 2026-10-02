@@ -1,21 +1,7 @@
 import { firstNames } from "@/static/firstNameList";
 import { lastNames } from "@/static/lastNameList";
-import { Player, Position, PositionRating } from "@/types/player";
+import { Player, Position } from "@/types/player";
 import { v4 as uuidv4 } from "uuid";
-
-const generatePositionPreferences = (position: Position): PositionRating => {
-  const preferences = {} as PositionRating;
-  const highestPreference = Math.floor(Math.random() * 100) + 1;
-
-  Object.values(Position).forEach((currentPosition) => {
-    preferences[currentPosition] =
-      currentPosition === position
-        ? highestPreference
-        : Math.floor(Math.random() * highestPreference);
-  });
-
-  return preferences;
-};
 
 export const generatePlayer = (position: Position): Player => {
   //generate name
@@ -24,7 +10,7 @@ export const generatePlayer = (position: Position): Player => {
   return {
     id: uuidv4(),
     name: generatedName,
-    positionPreference: generatePositionPreferences(position),
+    positionPreference: position,
     Pace: Math.floor(Math.random() * 101),
     Shooting: Math.floor(Math.random() * 101),
     Passing: Math.floor(Math.random() * 101),

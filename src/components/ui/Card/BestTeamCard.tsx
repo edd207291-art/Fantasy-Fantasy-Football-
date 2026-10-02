@@ -5,7 +5,6 @@ import {
   SectionLabel,
   Subheading,
 } from "@/components/ui/Typography";
-import { getBestPosition } from "@/scripts/Player/getBestPosition";
 import { generateTeam } from "@/scripts/Team/generateTeam";
 import type { Player } from "@/types/player";
 import { Text, View } from "react-native";
@@ -57,8 +56,7 @@ export default function BestTeamCard({ players }: BestTeamCardProps) {
             <BodyText>
               {group.players
                 .map(
-                  (player) =>
-                    `${player.name} (${getBestPosition(player).rating})`,
+                  (player) => `${player.name} (${player.positionPreference})`,
                 )
                 .join(", ") || "No eligible players"}
             </BodyText>

@@ -2,6 +2,7 @@ import { store } from "@/store";
 import { getPlayersInClub } from "@/store/clubsSlice";
 import { Match } from "@/types/match";
 import { Pitch } from "@/types/pitch";
+import { generateTeam } from "../Team/generateTeam";
 import { setUpPitchForMatch } from "./Pitch/setUpPitchForMatch";
 import { playTurn } from "./Turn/playTurn";
 
@@ -18,7 +19,10 @@ const TOTAL_TURNS = 500;
 export const playMatch = (match: Match): Match => {
   const state = store.getState();
   const homeClubPlayers = getPlayersInClub(state, match.homeClubId);
+  const homeClubTeam = generateTeam(homeClubPlayers);
   const awayClubPlayers = getPlayersInClub(state, match.awayClubId);
+  const awayClubTeam = generateTeam(awayClubPlayers);
+
   let pitch = setUpPitchForMatch(homeClubPlayers, awayClubPlayers).pitch;
   const pitchHistory: Pitch[] = [clonePitch(pitch)];
   let homeGoals = 0;
@@ -27,8 +31,8 @@ export const playMatch = (match: Match): Match => {
   for (let turn = 0; turn < TOTAL_TURNS; turn += 1) {
     const turnResult = playTurn({
       pitch,
-      homeClubPlayers,
-      awayClubPlayers,
+      homeClubTeam,
+      awayClubTeam,
       turn,
       matchId: match.id,
       homeGoals,

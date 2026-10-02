@@ -1,4 +1,4 @@
-import { getBestPosition } from "@/scripts/Player/getBestPosition";
+import { getPlayerRating } from "@/scripts/Player/getPlayerRating";
 import { Player, Position } from "@/types/player";
 
 type TeamPositions = {
@@ -14,18 +14,18 @@ interface ITeam {
 }
 
 type FormationResult = {
-  rating: number;
   players: {
     defenders: Player[];
     midfielders: Player[];
     forwards: Player[];
   };
+  formationRating: number;
 };
 
 const getFormationRating = (
-  defenders: Player[],
-  midfielders: Player[],
-  forwards: Player[],
+  defenders: PlayerWithRating[],
+  midfielders: PlayerWithRating[],
+  forwards: PlayerWithRating[],
   numberOfDefenders: number,
   numberOfMidfielders: number,
   numberOfForwards: number,
@@ -40,40 +40,33 @@ const getFormationRating = (
     selectedForwards.length < numberOfForwards
   ) {
     return {
-      rating: 0,
       players: {
         defenders: [],
         midfielders: [],
         forwards: [],
       },
+      formationRating: 0,
     };
   }
 
-  const defenderRating = selectedDefenders.reduce(
-    (sum, player) => sum + getBestPosition(player).rating,
-    0,
-  );
-  const midfielderRating = selectedMidfielders.reduce(
-    (sum, player) => sum + getBestPosition(player).rating,
-    0,
-  );
-  const forwardRating = selectedForwards.reduce(
-    (sum, player) => sum + getBestPosition(player).rating,
-    0,
-  );
-
   return {
-    rating: defenderRating + midfielderRating + forwardRating,
     players: {
-      defenders: selectedDefenders,
-      midfielders: selectedMidfielders,
-      forwards: selectedForwards,
+      defenders: selectedDefenders.map((player) => player.player),
+      midfielders: selectedMidfielders.map((player) => player.player),
+      forwards: selectedForwards.map((player) => player.player),
     },
+    formationRating: [
+      ...selectedDefenders,
+      ...selectedMidfielders,
+      ...selectedForwards,
+    ].reduce((total, playerWithRating) => total + playerWithRating.rating, 0),
   };
 };
 
+type PlayerWithRating = { player: Player; rating: number };
+
 export const generateTeam = (clubPlayers: Player[]): ITeam => {
-  const playersByPosition: Record<Position, Player[]> = {
+  const playersByPosition: Record<Position, PlayerWithRating[]> = {
     [Position.Goalkeeper]: [],
     [Position.Defender]: [],
     [Position.Midfielder]: [],
@@ -81,27 +74,25 @@ export const generateTeam = (clubPlayers: Player[]): ITeam => {
   };
 
   clubPlayers.forEach((player) => {
-    const bestPosition = getBestPosition(player).position;
-    playersByPosition[bestPosition].push(player);
+    const rating = getPlayerRating(player);
+    playersByPosition[player.positionPreference].push({ player, rating });
   });
 
-  Object.values(Position).forEach((position) => {
-    playersByPosition[position].sort(
-      (a, b) => b.positionPreference[position] - a.positionPreference[position],
-    );
-  });
+  const goalKeepers = playersByPosition[Position.Goalkeeper].sort(
+    (first, second) => second.rating - first.rating,
+  );
+  const bestGoalkeeper = goalKeepers[0].player;
 
-  // is a bug if no goalkeepers. In future when gen teams will gen players with a preferance for positions.
-  const goalKeepers = playersByPosition[Position.Goalkeeper];
-  const bestGoalkeeper = goalKeepers.reduce((prev, current) =>
-    getBestPosition(prev).rating > getBestPosition(current).rating
-      ? prev
-      : current,
+  const defenders = [...playersByPosition[Position.Defender]].sort(
+    (first, second) => second.rating - first.rating,
   );
 
-  const defenders = playersByPosition[Position.Defender];
-  const midfielders = playersByPosition[Position.Midfielder];
-  const forwards = playersByPosition[Position.Forward];
+  const midfielders = playersByPosition[Position.Midfielder].sort(
+    (first, second) => second.rating - first.rating,
+  );
+  const forwards = playersByPosition[Position.Forward].sort(
+    (first, second) => second.rating - first.rating,
+  );
 
   const formation422 = getFormationRating(
     defenders,
@@ -142,7 +133,9 @@ export const generateTeam = (clubPlayers: Player[]): ITeam => {
     { name: "3-4-3", result: formation343 },
     { name: "3-5-2", result: formation352 },
   ].reduce((prev, current) =>
-    prev.result.rating > current.result.rating ? prev : current,
+    current.result.formationRating > prev.result.formationRating
+      ? current
+      : prev,
   );
 
   return {

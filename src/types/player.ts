@@ -5,12 +5,10 @@ export enum Position {
   Goalkeeper = "Goalkeeper",
 }
 
-export type PositionRating = Record<Position, number>;
-
 export type Player = {
   id: string;
   name: string;
-  positionPreference: PositionRating;
+  positionPreference: Position;
   Pace: number; // Measures how fast a player runs, split into acceleration and sprint speed.
   Shooting: number; // Determines accuracy and power when taking shots at the goal.
   Passing: number; // Controls how well and accurately a player passes the ball.

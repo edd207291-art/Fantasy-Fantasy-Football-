@@ -1,19 +1,29 @@
+import type { generateTeam } from "@/scripts/Team/generateTeam";
 import { Pitch } from "@/types/pitch";
 import { Player } from "@/types/player";
 import { activatePlayer } from "./activatePlayer";
 
+type GeneratedTeam = ReturnType<typeof generateTeam>;
+
+const getTeamPlayers = (team: GeneratedTeam): Player[] => [
+  team.teamPlayers.Goalkeeper,
+  ...team.teamPlayers.Defenders,
+  ...team.teamPlayers.Midfielders,
+  ...team.teamPlayers.Forwards,
+];
+
 export const playTurn = ({
   pitch,
-  homeClubPlayers,
-  awayClubPlayers,
+  homeClubTeam,
+  awayClubTeam,
   turn,
   matchId,
   homeGoals,
   awayGoals,
 }: {
   pitch: Pitch;
-  homeClubPlayers: Player[];
-  awayClubPlayers: Player[];
+  homeClubTeam: GeneratedTeam;
+  awayClubTeam: GeneratedTeam;
   turn: number;
   matchId: string;
   homeGoals: number;
@@ -26,6 +36,8 @@ export const playTurn = ({
   const currentTurn = turn + 1;
   console.log(`Match ${matchId} - Turn ${currentTurn}`);
 
+  const homeClubPlayers = getTeamPlayers(homeClubTeam);
+  const awayClubPlayers = getTeamPlayers(awayClubTeam);
   let nextPitch = pitch;
   const playerCycle = [
     ...homeClubPlayers.map((player) => ({ player, teamSide: "home" as const })),

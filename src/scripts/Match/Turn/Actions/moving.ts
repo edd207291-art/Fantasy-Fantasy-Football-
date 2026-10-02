@@ -1,8 +1,8 @@
 import { Pitch, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
 import { performCheck } from "../../Checks/performCheck";
-import { getDistanceInSquares } from "./Utils/getDistanceInSquares";
-import { getRandomOffset } from "./Utils/getRandomOffset";
+import { getDistanceInSquares } from "../Utils/getDistanceInSquares";
+import { getRandomOffset } from "../Utils/getRandomOffset";
 
 export type MoveOutcome = {
   pitch: Pitch;
@@ -21,7 +21,6 @@ export const movePlayer = (
   let canMoveNumberOfZones = FREE_MOVE;
   const paceRoll = performCheck(player.Pace);
   if (paceRoll >= 0) {
-    console.log("fast-move");
     canMoveNumberOfZones = FAST_MOVE;
   }
 
@@ -39,6 +38,10 @@ export const movePlayer = (
         getDistanceInSquares(startedAt, zone.coordinates) <=
           canMoveNumberOfZones,
     );
+
+  if (reachableEmptyZones.length === 0) {
+    return { pitch, newPitch: pitch };
+  }
 
   //get closest empty zone to destination
   reachableEmptyZones.sort(
@@ -97,5 +100,3 @@ export const movePlayer = (
     pitch,
   };
 };
-
-export default movePlayer;
