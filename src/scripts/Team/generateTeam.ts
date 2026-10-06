@@ -1,17 +1,12 @@
 import { getPlayerRating } from "@/scripts/Player/getPlayerRating";
+import {
+  LINEUP_FORMATIONS,
+  type LineupFormation,
+  type ManagerLineup,
+} from "@/types/lineup";
 import { Player, Position } from "@/types/player";
-
-type TeamPositions = {
-  Goalkeeper: Player;
-  Defenders: Player[];
-  Midfielders: Player[];
-  Forwards: Player[];
-};
-
-interface ITeam {
-  formation: string;
-  teamPlayers: TeamPositions;
-}
+import { ITeam } from "@/types/team";
+import { getTeamFromLineup } from "./getTeamFromLineup";
 
 type FormationResult = {
   players: {
@@ -65,7 +60,16 @@ const getFormationRating = (
 
 type PlayerWithRating = { player: Player; rating: number };
 
-export const generateTeam = (clubPlayers: Player[]): ITeam => {
+export const generateTeam = (
+  clubPlayers: Player[],
+  lineup?: ManagerLineup,
+): ITeam => {
+  if (lineup) {
+    const selectedTeam = getTeamFromLineup(clubPlayers, lineup);
+    if (selectedTeam) return selectedTeam;
+  }
+
+  // else just generate best possible team
   const playersByPosition: Record<Position, PlayerWithRating[]> = {
     [Position.Goalkeeper]: [],
     [Position.Defender]: [],
@@ -94,45 +98,25 @@ export const generateTeam = (clubPlayers: Player[]): ITeam => {
     (first, second) => second.rating - first.rating,
   );
 
-  const formation422 = getFormationRating(
-    defenders,
-    midfielders,
-    forwards,
-    4,
-    2,
-    2,
-  );
-  const formation433 = getFormationRating(
-    defenders,
-    midfielders,
-    forwards,
-    4,
-    3,
-    3,
-  );
-  const formation343 = getFormationRating(
-    defenders,
-    midfielders,
-    forwards,
-    3,
-    4,
-    3,
-  );
-  const formation352 = getFormationRating(
-    defenders,
-    midfielders,
-    forwards,
-    3,
-    5,
-    2,
-  );
+  const formationCandidates = (
+    Object.keys(LINEUP_FORMATIONS) as LineupFormation[]
+  ).map((name) => {
+    const formation = LINEUP_FORMATIONS[name];
 
-  const bestFormation = [
-    { name: "4-2-2", result: formation422 },
-    { name: "4-3-3", result: formation433 },
-    { name: "3-4-3", result: formation343 },
-    { name: "3-5-2", result: formation352 },
-  ].reduce((prev, current) =>
+    return {
+      name,
+      result: getFormationRating(
+        defenders,
+        midfielders,
+        forwards,
+        formation.defenders,
+        formation.midfielders,
+        formation.forwards,
+      ),
+    };
+  });
+
+  const bestFormation = formationCandidates.reduce((prev, current) =>
     current.result.formationRating > prev.result.formationRating
       ? current
       : prev,

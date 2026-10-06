@@ -22,7 +22,7 @@ export default function BestTeamCard({ players }: BestTeamCardProps) {
   if (players.length === 0) {
     return (
       <Card>
-        <Heading>Best team</Heading>
+        <Heading>Team</Heading>
         <Subheading>No players available to build a team.</Subheading>
       </Card>
     );
@@ -40,8 +40,8 @@ export default function BestTeamCard({ players }: BestTeamCardProps) {
     <Card className="mb-6">
       <View className="mb-4 flex-row items-end justify-between gap-4">
         <View>
-          <Heading>Best team</Heading>
-          <Subheading>Highest-rated available lineup</Subheading>
+          <Heading>Team</Heading>
+          <Subheading>Clubs lineup</Subheading>
         </View>
         <Text className="text-lg font-bold text-blue-400">{formation}</Text>
       </View>

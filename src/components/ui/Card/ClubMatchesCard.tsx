@@ -40,9 +40,10 @@ export default function ClubMatchesCard({
             const isHome = match.homeClubId === clubId;
             const opponentId = isHome ? match.awayClubId : match.homeClubId;
             const winnerClubId = match.result?.winnerClubId;
-            const status =
-              winnerClubId === undefined || winnerClubId === null
-                ? "Not played"
+            const status = !match.result
+              ? "Not played"
+              : winnerClubId === null
+                ? "Draw"
                 : winnerClubId === clubId
                   ? "Won"
                   : "Lost";
@@ -51,7 +52,10 @@ export default function ClubMatchesCard({
                 ? "text-emerald-400"
                 : status === "Lost"
                   ? "text-red-400"
-                  : "text-slate-400";
+                  : status === "Draw"
+                    ? "text-amber-400"
+                    : "text-slate-400";
+            const score = match.result?.score ?? match.score;
             const opponentName = clubNames.get(opponentId) || "Unknown club";
 
             return (
@@ -65,9 +69,14 @@ export default function ClubMatchesCard({
                   </BodyText>
                   <Subheading>Week {match.week}</Subheading>
                 </View>
-                <Text className={`font-semibold ${statusClassName}`}>
-                  {status}
-                </Text>
+                <View className="items-end">
+                  <Text className="font-bold text-white">
+                    {score ? `${score.home} - ${score.away}` : "—"}
+                  </Text>
+                  <Text className={`font-semibold ${statusClassName}`}>
+                    {status}
+                  </Text>
+                </View>
               </View>
             );
           })}

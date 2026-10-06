@@ -1,6 +1,6 @@
 import { generateTeam } from "@/scripts/Team/generateTeam";
-import { getPlayersInClub } from "@/store/clubsSlice";
 import { Pitch } from "@/types/pitch";
+import { ITeam } from "@/types/team";
 import { createPitch, PITCH_LENGTH, PITCH_WIDTH } from "./createPitch";
 
 const GOALKEEPER_ROW_PERCENT = 4;
@@ -39,13 +39,8 @@ const placeTeamOnPitch = (
   placePlayers(teamPlayers.Forwards, forwardsRow);
 };
 
-export const setUpPitchForMatch = (
-  homeClubPlayers: ReturnType<typeof getPlayersInClub>,
-  awayClubPlayers: ReturnType<typeof getPlayersInClub>,
-) => {
+export const setUpPitchForMatch = (homeTeam: ITeam, awayTeam: ITeam) => {
   const pitch = createPitch();
-  const homeTeam = generateTeam(homeClubPlayers);
-  const awayTeam = generateTeam(awayClubPlayers);
 
   placeTeamOnPitch(pitch, homeTeam.teamPlayers, true);
   placeTeamOnPitch(pitch, awayTeam.teamPlayers, false);

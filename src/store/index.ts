@@ -10,6 +10,7 @@ import type { ThunkAction } from "redux-thunk";
 
 import calendarReducer from "./calenderSlice";
 import clubsReducer from "./clubsSlice";
+import managerReducer from "./managerSlice";
 import matchesReducer from "./matchesSlice";
 import playersReducer from "./playersSlice";
 
@@ -18,6 +19,7 @@ const appReducer = combineReducers({
   clubs: clubsReducer,
   matches: matchesReducer,
   players: playersReducer,
+  manager: managerReducer,
 });
 
 export const resetStore = createAction("store/reset");
@@ -49,4 +51,9 @@ export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export type AppThunk = ThunkAction<void, RootState, unknown, Action>;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action
+>;

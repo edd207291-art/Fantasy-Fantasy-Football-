@@ -1,7 +1,6 @@
+import { FT_IN_ZONE } from "@/static/GlobalVars";
 import { Pitch, PitchZone } from "@/types/pitch";
 import { getRoundedNumber, getRoundedOddNumber } from "../../Utils/rounding";
-//ft in each zone
-export const FT_IN_ZONE = 5;
 
 export const PITCH_WIDTH = getRoundedOddNumber(220 / FT_IN_ZONE);
 export const PITCH_LENGTH = getRoundedOddNumber(345 / FT_IN_ZONE);

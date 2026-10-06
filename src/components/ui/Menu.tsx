@@ -2,30 +2,36 @@ import { Pressable, Text, View } from "react-native";
 
 export enum MenuItem {
   Home = "Home",
+  MyTeam = "My Team",
+  Leagues = "Leagues",
   Clubs = "Clubs",
   Matchs = "Matchs",
   Players = "Players",
-  Game = "Game",
 }
 
 type MenuProps = {
   activePage?: MenuItem;
+  hasLeague: boolean;
   onNavigate?: (page: MenuItem) => void;
   onReset?: () => void;
 };
 
 export default function Menu({
   activePage = MenuItem.Home,
+  hasLeague,
   onNavigate,
   onReset,
 }: MenuProps) {
-  const menuItems: MenuItem[] = [
-    MenuItem.Home,
-    MenuItem.Clubs,
-    MenuItem.Matchs,
-    MenuItem.Players,
-    MenuItem.Game,
-  ];
+  const menuItems: MenuItem[] = hasLeague
+    ? [
+        MenuItem.Home,
+        MenuItem.MyTeam,
+        MenuItem.Leagues,
+        MenuItem.Clubs,
+        MenuItem.Matchs,
+        MenuItem.Players,
+      ]
+    : [MenuItem.Home];
 
   return (
     <View className="flex-row items-center justify-between border-b border-slate-700 bg-slate-900 px-5 py-4">

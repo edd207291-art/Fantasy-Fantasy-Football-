@@ -19,11 +19,21 @@ const TOTAL_TURNS = 500;
 export const playMatch = (match: Match): Match => {
   const state = store.getState();
   const homeClubPlayers = getPlayersInClub(state, match.homeClubId);
-  const homeClubTeam = generateTeam(homeClubPlayers);
+  const homeClubTeam = generateTeam(
+    homeClubPlayers,
+    state.manager.managersTeamId === match.homeClubId
+      ? state.manager.lineup
+      : undefined,
+  );
   const awayClubPlayers = getPlayersInClub(state, match.awayClubId);
-  const awayClubTeam = generateTeam(awayClubPlayers);
+  const awayClubTeam = generateTeam(
+    awayClubPlayers,
+    state.manager.managersTeamId === match.awayClubId
+      ? state.manager.lineup
+      : undefined,
+  );
 
-  let pitch = setUpPitchForMatch(homeClubPlayers, awayClubPlayers).pitch;
+  let pitch = setUpPitchForMatch(homeClubTeam, awayClubTeam).pitch;
   const pitchHistory: Pitch[] = [clonePitch(pitch)];
   let homeGoals = 0;
   let awayGoals = 0;
@@ -60,11 +70,11 @@ export const playMatch = (match: Match): Match => {
   return {
     ...match,
     score,
-    pitchHistory,
+    // pitchHistory,
     result: {
       winnerClubId,
       score,
-      pitchStates: pitchHistory,
+      // pitchStates: pitchHistory,
     },
   };
 };

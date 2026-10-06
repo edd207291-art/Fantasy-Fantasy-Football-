@@ -2,6 +2,7 @@ import Layout from "@/components/ui/Layout";
 import { ButtonText, PageHeading } from "@/components/ui/Typography";
 import { PITCH_LENGTH, PITCH_WIDTH } from "@/scripts/Match/Pitch/createPitch";
 import { setUpPitchForMatch } from "@/scripts/Match/Pitch/setUpPitchForMatch";
+import { generateTeam } from "@/scripts/Team/generateTeam";
 import { useAppSelector } from "@/store/hooks";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
@@ -13,6 +14,8 @@ export default function MatchViewerScreen() {
   const clubs = useAppSelector((state) => state.clubs.clubs);
   const players = useAppSelector((state) => state.players.players);
   const matches = useAppSelector((state) => state.matches.matches);
+  const managerTeamId = useAppSelector((state) => state.manager.managersTeamId);
+  const managerLineup = useAppSelector((state) => state.manager.lineup);
   const [previewMode, setPreviewMode] = useState<"setup" | "turns">("setup");
   const [turnIndex, setTurnIndex] = useState(0);
 
@@ -59,9 +62,26 @@ export default function MatchViewerScreen() {
     const awayPlayers = players.filter((player) =>
       awayClub.playerIds.includes(player.id),
     );
+    const homeTeam = generateTeam(
+      homePlayers,
+      managerTeamId === previewMatch.homeClubId ? managerLineup : undefined,
+    );
+    const awayTeam = generateTeam(
+      awayPlayers,
+      managerTeamId === previewMatch.awayClubId ? managerLineup : undefined,
+    );
 
-    return setUpPitchForMatch(homePlayers, awayPlayers).pitch;
-  }, [clubs, players, pitchStates, previewMatch, previewMode, turnIndex]);
+    return setUpPitchForMatch(homeTeam, awayTeam).pitch;
+  }, [
+    clubs,
+    managerLineup,
+    managerTeamId,
+    players,
+    pitchStates,
+    previewMatch,
+    previewMode,
+    turnIndex,
+  ]);
 
   if (!previewMatch || !previewPitch) {
     return (

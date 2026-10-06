@@ -2,7 +2,10 @@ import { Club } from "@/types/club";
 import { Match } from "@/types/match";
 import { v4 as uuidv4 } from "uuid";
 
-export const generateLeagueMatches = (clubsInLeague: Club[]): Match[] => {
+export const generateLeagueMatches = (
+  clubsInLeague: Club[],
+  season = 1,
+): Match[] => {
   const matches: Match[] = [];
   const clubs: (Club | null)[] = [...clubsInLeague];
 
@@ -27,7 +30,7 @@ export const generateLeagueMatches = (clubsInLeague: Club[]): Match[] => {
           id: uuidv4(),
           homeClubId: homeClub.id,
           awayClubId: awayClub.id,
-          season: 1,
+          season,
           week: week + 1,
         });
       }
@@ -46,7 +49,7 @@ export const generateLeagueMatches = (clubsInLeague: Club[]): Match[] => {
       id: uuidv4(),
       homeClubId: match.awayClubId,
       awayClubId: match.homeClubId,
-      season: match.season,
+      season,
       week: match.week + weeksPerLeg,
     });
   });

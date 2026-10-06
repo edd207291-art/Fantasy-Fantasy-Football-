@@ -1,8 +1,8 @@
 import { getRoundedNumber } from "@/scripts/Utils/rounding";
+import { FT_IN_ZONE } from "@/static/GlobalVars";
 import { Pitch, PitchCoordinates, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
 import { performCheck } from "../../Checks/performCheck";
-import { FT_IN_ZONE } from "../../Pitch/createPitch";
 import { getDistanceInSquares } from "../Utils/getDistanceInSquares";
 import { getRandomOffset } from "../Utils/getRandomOffset";
 import { moveTowardCoordinate } from "../Utils/moveTowardCoordinate";

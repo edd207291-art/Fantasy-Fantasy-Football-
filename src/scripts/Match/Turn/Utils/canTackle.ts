@@ -1,7 +1,7 @@
 import { getRoundedNumber } from "@/scripts/Utils/rounding";
+import { FT_IN_ZONE } from "@/static/GlobalVars";
 import { Pitch, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
-import { FT_IN_ZONE } from "../../Pitch/createPitch";
 import { TeamSide } from "../Ballcarrier/ballcarrier";
 import { getDistanceInSquares } from "./getDistanceInSquares";
 

@@ -1,13 +1,14 @@
+import {
+  STARTING_CLUB_DEFENDERS,
+  STARTING_CLUB_FORWARDS,
+  STARTING_CLUB_GOALKEEPERS,
+  STARTING_CLUB_MIDFIELDERS,
+} from "@/static/GlobalVars";
 import { Club } from "@/types/club";
 import { Player, Position } from "@/types/player";
 import { v4 as uuidv4 } from "uuid";
 import { generateClubName } from "./generateClubName";
 import { generatePlayer } from "./generatePlayer";
-
-const GOALKEEPERS = 3;
-const DEFENDERS = 5;
-const MIDFIELDERS = 5;
-const FORWARDS = 5;
 
 export const generateClubWithPlayers = (
   onPlayerGenerated?: (player: Player) => void,
@@ -21,16 +22,16 @@ export const generateClubWithPlayers = (
 
   const players = [];
 
-  for (let i = 0; i < GOALKEEPERS; i++) {
+  for (let i = 0; i < STARTING_CLUB_GOALKEEPERS; i++) {
     players.push(createPlayer(Position.Goalkeeper));
   }
-  for (let i = 0; i < DEFENDERS; i++) {
+  for (let i = 0; i < STARTING_CLUB_DEFENDERS; i++) {
     players.push(createPlayer(Position.Defender));
   }
-  for (let i = 0; i < MIDFIELDERS; i++) {
+  for (let i = 0; i < STARTING_CLUB_MIDFIELDERS; i++) {
     players.push(createPlayer(Position.Midfielder));
   }
-  for (let i = 0; i < FORWARDS; i++) {
+  for (let i = 0; i < STARTING_CLUB_FORWARDS; i++) {
     players.push(createPlayer(Position.Forward));
   }
 
