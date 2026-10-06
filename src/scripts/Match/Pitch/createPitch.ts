@@ -1,17 +1,18 @@
 import { Pitch, PitchZone } from "@/types/pitch";
+import { getRoundedNumber, getRoundedOddNumber } from "../../Utils/rounding";
+//ft in each zone
+export const FT_IN_ZONE = 5;
 
-export const ZONE_TO_FEET_RATIO = 5;
+export const PITCH_WIDTH = getRoundedOddNumber(220 / FT_IN_ZONE);
+export const PITCH_LENGTH = getRoundedOddNumber(345 / FT_IN_ZONE);
 
-export const PITCH_WIDTH = 44;
-export const PITCH_LENGTH = 69;
-
-const GOAL_WIDTH = 5;
-const GOAL_AREA_WIDTH = 11;
-const GOAL_AREA_DEPTH = 4;
-const PENALTY_AREA_WIDTH = 25;
-const PENALTY_AREA_DEPTH = 11;
-const CENTER_CIRCLE_RADIUS = 6;
-const PENALTY_SPOT_DISTANCE = 2;
+const GOAL_WIDTH = getRoundedNumber(25 / FT_IN_ZONE);
+const GOAL_AREA_WIDTH = getRoundedNumber(55 / FT_IN_ZONE);
+const GOAL_AREA_DEPTH = getRoundedNumber(20 / FT_IN_ZONE);
+const PENALTY_AREA_WIDTH = getRoundedNumber(125 / FT_IN_ZONE);
+const PENALTY_AREA_DEPTH = getRoundedNumber(55 / FT_IN_ZONE);
+const CENTER_CIRCLE_RADIUS = getRoundedNumber(30 / FT_IN_ZONE);
+const PENALTY_SPOT_DISTANCE = getRoundedNumber(10 / FT_IN_ZONE);
 
 const isInsideCenteredArea = (
   x: number,

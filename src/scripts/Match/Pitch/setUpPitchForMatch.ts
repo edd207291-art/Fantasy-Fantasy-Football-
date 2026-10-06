@@ -3,15 +3,24 @@ import { getPlayersInClub } from "@/store/clubsSlice";
 import { Pitch } from "@/types/pitch";
 import { createPitch, PITCH_LENGTH, PITCH_WIDTH } from "./createPitch";
 
+const GOALKEEPER_ROW_PERCENT = 4;
+const DEFENDERS_ROW_PERCENT = 15;
+const MIDFIELDERS_ROW_PERCENT = 27;
+const FORWARDS_ROW_PERCENT = 40;
+
 const placeTeamOnPitch = (
   pitch: Pitch,
   teamPlayers: ReturnType<typeof generateTeam>["teamPlayers"],
   isHomeTeam: boolean,
 ) => {
-  const goalkeepersRow = isHomeTeam ? 2 : PITCH_LENGTH - 3;
-  const defendersRow = isHomeTeam ? 10 : PITCH_LENGTH - 11;
-  const midfieldersRow = isHomeTeam ? 21 : PITCH_LENGTH - 22;
-  const forwardsRow = isHomeTeam ? 30 : PITCH_LENGTH - 31;
+  const getRowFromOwnGoal = (percentage: number) => {
+    const offset = Math.round((PITCH_LENGTH * percentage) / 100);
+    return isHomeTeam ? offset : PITCH_LENGTH - 1 - offset;
+  };
+  const goalkeepersRow = getRowFromOwnGoal(GOALKEEPER_ROW_PERCENT);
+  const defendersRow = getRowFromOwnGoal(DEFENDERS_ROW_PERCENT);
+  const midfieldersRow = getRowFromOwnGoal(MIDFIELDERS_ROW_PERCENT);
+  const forwardsRow = getRowFromOwnGoal(FORWARDS_ROW_PERCENT);
 
   const placePlayers = (
     players: ReturnType<typeof generateTeam>["teamPlayers"]["Defenders"],

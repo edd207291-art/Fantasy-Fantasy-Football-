@@ -1,7 +1,6 @@
 import { Pitch, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
 import { versusCheck } from "../../Checks/versusCheck";
-import { findBallZone } from "../Utils/findBallZone";
 import { movePlayer } from "./moving";
 
 export type TackleOutcome = {
@@ -16,7 +15,9 @@ export const tackle = (
   attackerZone: PitchZone,
   emptyTackleSpace: PitchZone,
 ): TackleOutcome => {
-  const defenderZone = findBallZone(pitch);
+  const defenderZone = pitch
+    .flat()
+    .find((zone) => zone.playerId === defender.id);
 
   if (!defenderZone) {
     throw new Error("No player with the ball found on the pitch.");

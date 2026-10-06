@@ -1,6 +1,8 @@
+import { getRoundedNumber } from "@/scripts/Utils/rounding";
 import { Pitch, PitchCoordinates, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
 import { performCheck } from "../../Checks/performCheck";
+import { FT_IN_ZONE } from "../../Pitch/createPitch";
 import { getDistanceInSquares } from "../Utils/getDistanceInSquares";
 import { getRandomOffset } from "../Utils/getRandomOffset";
 import { moveTowardCoordinate } from "../Utils/moveTowardCoordinate";
@@ -22,17 +24,22 @@ export type PassOutcome = {
   newPitch: Pitch;
 };
 
+const SHORT_PASS = getRoundedNumber(45 / FT_IN_ZONE);
+const MID_PASS = getRoundedNumber(90 / FT_IN_ZONE);
+const SHORT_PASS_MISS_DISTANCE = getRoundedNumber(15 / FT_IN_ZONE);
+const OTHER_PASS_MISS_DISTANCE = getRoundedNumber(30 / FT_IN_ZONE);
+
 export const getPassRange = (
   from: PitchCoordinates,
   to: PitchCoordinates,
 ): PassRange => {
   const distance = getDistanceInSquares(from, to);
 
-  if (distance <= 9) {
+  if (distance <= SHORT_PASS) {
     return "short";
   }
 
-  if (distance <= 18) {
+  if (distance <= MID_PASS) {
     return "mid";
   }
 
@@ -79,12 +86,16 @@ export const passBall = (
   let ballZone = { ...targetZone };
 
   if (!passSuccess) {
-    const missDistance = passRange === "short" ? 2 : 5;
+    const missDistance =
+      passRange === "short"
+        ? SHORT_PASS_MISS_DISTANCE
+        : OTHER_PASS_MISS_DISTANCE;
     ballZone = getRandomOffset(targetZone, missDistance, pitch);
   }
 
+  const LONG_PASS_OFF_SET = getRoundedNumber(15 / FT_IN_ZONE);
   if (passRange === "long" && passSuccess) {
-    ballZone = getRandomOffset(targetZone, 3, pitch);
+    ballZone = getRandomOffset(targetZone, LONG_PASS_OFF_SET, pitch);
   }
 
   const receiverRoll = performCheck(receiver.Pace);

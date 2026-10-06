@@ -1,16 +1,43 @@
-import { Pitch } from "@/types/pitch";
+import { Pitch, PitchZone } from "@/types/pitch";
 import { Player, Position } from "@/types/player";
 import { movePlayer } from "./Actions/moving";
 import { tackle } from "./Actions/tackle";
 import { ballCarrierPlayer, TeamSide } from "./Ballcarrier/ballcarrier";
 import { goalkeeperAction } from "./goalkeeperAction";
 import { canTackle } from "./Utils/canTackle";
-import { findBallZone } from "./Utils/findBallZone";
-import { getPlayerZone } from "./Utils/getPlayerZone";
 
 export type ActivationResult = {
   pitch: Pitch;
   scored: boolean;
+};
+
+const findActivationZones = (
+  pitch: Pitch,
+  playerId: string,
+  needsBallZone: boolean,
+): { activePlayerZone: PitchZone | null; ballZone: PitchZone | null } => {
+  let activePlayerZone: PitchZone | null = null;
+  let ballZone: PitchZone | null = null;
+
+  for (const row of pitch) {
+    for (const zone of row) {
+      if (!activePlayerZone && zone.playerId === playerId) {
+        activePlayerZone = zone;
+      }
+      if (needsBallZone && !ballZone && zone.containsBall) {
+        ballZone = zone;
+      }
+
+      if (
+        activePlayerZone &&
+        (activePlayerZone.containsBall || !needsBallZone || ballZone)
+      ) {
+        return { activePlayerZone, ballZone };
+      }
+    }
+  }
+
+  return { activePlayerZone, ballZone };
 };
 
 export const activatePlayer = (
@@ -19,8 +46,14 @@ export const activatePlayer = (
   teamSide: TeamSide,
   homeClubPlayers: Player[],
   awayClubPlayers: Player[],
+  playerPositionInTeam: Position,
 ): ActivationResult => {
-  const activePlayerZone = getPlayerZone(pitch, playerBeingActivated.id);
+  const needsBallZone = playerPositionInTeam !== Position.Goalkeeper;
+  const { activePlayerZone, ballZone } = findActivationZones(
+    pitch,
+    playerBeingActivated.id,
+    needsBallZone,
+  );
 
   if (!activePlayerZone) {
     return { pitch, scored: false };
@@ -39,7 +72,7 @@ export const activatePlayer = (
     });
   }
   //if player is goalkeeper
-  if (playerBeingActivated.positionPreference === Position.Goalkeeper) {
+  if (playerPositionInTeam === Position.Goalkeeper) {
     return goalkeeperAction({
       pitch,
       playerBeingActivated,
@@ -47,8 +80,6 @@ export const activatePlayer = (
       activePlayerZone,
     });
   }
-
-  const ballZone = findBallZone(pitch);
 
   if (!ballZone) {
     return { pitch, scored: false };

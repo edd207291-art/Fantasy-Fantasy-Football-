@@ -40,7 +40,7 @@ export const shootBall = (
         goalKeeperZone.coordinates.x
       ].containsBall = true;
     } else {
-      debugger;
+      //place ball in center of pitch
       const centerX = Math.floor(pitch[0].length / 2);
       const centerY = Math.floor(pitch.length / 2);
       newPitch[centerY][centerX].containsBall = true;
