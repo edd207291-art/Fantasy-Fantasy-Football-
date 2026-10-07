@@ -4,7 +4,6 @@ export enum MenuItem {
   Home = "Home",
   MyTeam = "My Team",
   Leagues = "Leagues",
-  Clubs = "Clubs",
   Matchs = "Matchs",
   Players = "Players",
 }
@@ -27,7 +26,6 @@ export default function Menu({
         MenuItem.Home,
         MenuItem.MyTeam,
         MenuItem.Leagues,
-        MenuItem.Clubs,
         MenuItem.Matchs,
         MenuItem.Players,
       ]

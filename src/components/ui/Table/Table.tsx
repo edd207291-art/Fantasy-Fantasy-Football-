@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
 export type TableColumn = {
   key: string;
@@ -13,6 +13,7 @@ type TableProps<T> = {
   emptyMessage?: string;
   getRowKey: (row: T, index: number) => string;
   renderCell: (row: T, column: TableColumn) => ReactNode;
+  onRowPress?: (row: T) => void;
   verticalScroll?: boolean;
 };
 
@@ -22,6 +23,7 @@ export default function Table<T>({
   emptyMessage = "No records available.",
   getRowKey,
   renderCell,
+  onRowPress,
   verticalScroll = true,
 }: TableProps<T>) {
   const tableWidth = columns.reduce((total, column) => total + column.width, 0);
@@ -57,8 +59,9 @@ export default function Table<T>({
         </View>
 
         {data.map((row, index) => (
-          <View
+          <Pressable
             key={getRowKey(row, index)}
+            onPress={onRowPress ? () => onRowPress(row) : undefined}
             className="flex-row border-b border-slate-800 px-4 py-3 last:border-b-0"
           >
             {columns.map((column) => (
@@ -66,7 +69,7 @@ export default function Table<T>({
                 {renderCell(row, column)}
               </View>
             ))}
-          </View>
+          </Pressable>
         ))}
       </View>
     </ScrollView>

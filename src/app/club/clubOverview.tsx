@@ -18,6 +18,12 @@ export default function ClubOverview() {
   );
   const clubs = useAppSelector((state) => state.clubs.clubs);
   const matches = useAppSelector((state) => state.matches.matches);
+  const managersClubId = useAppSelector(
+    (state) => state.manager.managersTeamId,
+  );
+  if (managersClubId === club?.id) {
+    router.replace("/myTeam");
+  }
 
   return (
     <Layout>

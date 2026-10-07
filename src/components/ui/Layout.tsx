@@ -23,9 +23,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     case "/leagues":
       activePage = MenuItem.Leagues;
       break;
-    case "/clubs":
-      activePage = MenuItem.Clubs;
-      break;
     case "/matchs":
       activePage = MenuItem.Matchs;
       break;
@@ -36,9 +33,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const handleNavigate = (page: MenuItem) => {
     switch (page) {
-      case MenuItem.Clubs:
-        router.push("/clubs");
-        break;
       case MenuItem.Matchs:
         router.push("/matchs");
         break;

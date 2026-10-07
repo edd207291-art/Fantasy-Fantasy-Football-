@@ -1,5 +1,6 @@
 import Table, { type TableColumn } from "@/components/ui/Table/Table";
 import type { LeagueStanding } from "@/scripts/League/getLeagueStandings";
+import { useRouter } from "expo-router";
 import { Text } from "react-native";
 
 const COLUMNS: TableColumn[] = [
@@ -24,12 +25,20 @@ export default function LeagueStandingsTable({
   standings,
   highlightedClubId,
 }: LeagueStandingsTableProps) {
+  const router = useRouter();
+
   return (
     <Table
       columns={COLUMNS}
       data={standings}
       emptyMessage="No clubs in this league yet."
       getRowKey={(standing) => standing.clubId}
+      onRowPress={(standing) =>
+        router.push({
+          pathname: "/club/clubOverview",
+          params: { id: standing.clubId },
+        })
+      }
       verticalScroll={false}
       renderCell={(standing, column) => {
         const values: Record<string, string | number> = {
