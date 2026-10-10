@@ -6,7 +6,7 @@ import {
 } from "@/static/GlobalVars";
 import { Club } from "@/types/club";
 import { Player, Position } from "@/types/player";
-import { v4 as uuidv4 } from "uuid";
+import * as Crypto from "expo-crypto";
 import { generateClubName } from "./generateClubName";
 import { generatePlayer } from "./generatePlayer";
 
@@ -38,7 +38,7 @@ export const generateClubWithPlayers = (
   const clubName = generateClubName(existingClubNames);
 
   return {
-    id: uuidv4(),
+    id: Crypto.randomUUID(),
     name: clubName,
     playerIds: players.map((player) => player.id),
   };

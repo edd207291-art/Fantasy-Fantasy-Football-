@@ -26,7 +26,8 @@ export default function Table<T>({
   onRowPress,
   verticalScroll = true,
 }: TableProps<T>) {
-  const tableWidth = columns.reduce((total, column) => total + column.width, 0);
+  const tableWidth =
+    columns.reduce((total, column) => total + column.width, 0) + 32;
 
   if (data.length === 0) {
     return (
@@ -39,8 +40,9 @@ export default function Table<T>({
   const table = (
     <ScrollView
       horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ alignItems: "center" }}
+      className="w-full pb-4"
+      showsHorizontalScrollIndicator={true}
+      contentContainerStyle={{ alignItems: "flex-start" }}
     >
       <View
         className="overflow-hidden rounded-lg border border-slate-700"

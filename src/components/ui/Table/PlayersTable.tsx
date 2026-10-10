@@ -10,8 +10,8 @@ export default function PlayersTable({ players }: PlayersTableProps) {
   return (
     <Table
       columns={[
-        { key: "name", label: "Name", width: 192 },
-        { key: "position", label: "Position", width: 144 },
+        { key: "name", label: "Name", width: 150 },
+        { key: "position", label: "Position", width: 100 },
         { key: "Defending", label: "Def", width: 50 },
         { key: "Dribbling", label: "Dri", width: 50 },
         { key: "Pace", label: "Pac", width: 50 },

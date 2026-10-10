@@ -4,16 +4,14 @@ import { useRouter } from "expo-router";
 import { Text } from "react-native";
 
 const COLUMNS: TableColumn[] = [
-  { key: "rank", label: "#", width: 56 },
-  { key: "clubName", label: "Club", width: 200 },
-  { key: "played", label: "P", width: 56 },
-  { key: "won", label: "W", width: 56 },
-  { key: "drawn", label: "D", width: 56 },
-  { key: "lost", label: "L", width: 56 },
-  { key: "goalsFor", label: "GF", width: 64 },
-  { key: "goalsAgainst", label: "GA", width: 64 },
-  { key: "goalDifference", label: "GD", width: 64 },
-  { key: "points", label: "Pts", width: 64 },
+  { key: "rank", label: "#", width: 25 },
+  { key: "clubName", label: "Club", width: 120 },
+  { key: "played", label: "P", width: 25 },
+  { key: "won", label: "W", width: 25 },
+  { key: "drawn", label: "D", width: 25 },
+  { key: "lost", label: "L", width: 25 },
+  { key: "goalDifference", label: "GD", width: 25 },
+  { key: "points", label: "Pts", width: 25 },
 ];
 
 type LeagueStandingsTableProps = {

@@ -1,6 +1,6 @@
 import { Club } from "@/types/club";
 import { Match } from "@/types/match";
-import { v4 as uuidv4 } from "uuid";
+import * as Crypto from "expo-crypto";
 
 export const generateLeagueMatches = (
   clubsInLeague: Club[],
@@ -27,7 +27,7 @@ export const generateLeagueMatches = (
 
       if (homeClub && awayClub) {
         matches.push({
-          id: uuidv4(),
+          id: Crypto.randomUUID(),
           homeClubId: homeClub.id,
           awayClubId: awayClub.id,
           season,
@@ -46,7 +46,7 @@ export const generateLeagueMatches = (
 
   firstLegMatches.forEach((match) => {
     matches.push({
-      id: uuidv4(),
+      id: Crypto.randomUUID(),
       homeClubId: match.awayClubId,
       awayClubId: match.homeClubId,
       season,

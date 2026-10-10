@@ -2,14 +2,21 @@ import Menu, { MenuItem } from "@/components/ui/Menu";
 import { resetStore } from "@/store";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { usePathname, useRouter } from "expo-router";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, useWindowDimensions } from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const insets = useSafeAreaInsets();
   const hasLeague = useAppSelector((state) => state.clubs.clubs.length > 0);
   const isSeasonSummary = pathname === "/seasonSummary";
+  const { width } = useWindowDimensions();
+  const hasBottomMenu = width < 768 && !isSeasonSummary;
 
   let activePage: MenuItem | undefined;
 
@@ -51,7 +58,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <View className="flex-1 bg-slate-950">
+    <SafeAreaView
+      className="flex-1 bg-slate-950"
+      edges={["top", "left", "right"]}
+    >
       {isSeasonSummary ? null : (
         <Menu
           activePage={activePage}
@@ -62,12 +72,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       <ScrollView
-        className="flex-1 px-6"
-        contentContainerStyle={{ flexGrow: 1 }}
+        className="flex-1 px-4 sm:px-6"
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: (hasBottomMenu ? 80 : 0) + insets.bottom,
+        }}
         showsVerticalScrollIndicator={true}
       >
         <View className="w-full items-center">{children}</View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

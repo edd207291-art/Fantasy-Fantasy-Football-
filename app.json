@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "fanstery_fanstery_football",
-    "slug": "fanstery_fanstery_football",
+    "slug": "fantasy-fantasy-football",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -17,7 +17,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.fantasy_fantasy_football.fantasyfantasyfootball"
     },
     "web": {
       "output": "static",
@@ -32,11 +33,20 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
-      ]
+      ],
+      "expo-image",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ce1b1543-a246-481f-92d4-b8009e7ec288"
+      }
+    },
+    "owner": "fantasy_fantasy_football"
   }
 }

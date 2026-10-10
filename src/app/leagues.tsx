@@ -13,7 +13,7 @@ export default function LeaguesScreen() {
 
   return (
     <Layout>
-      <View className="w-full max-w-5xl flex-1 py-8">
+      <View className="w-full max-w-5xl py-8">
         <View className="mb-6 border-b border-slate-800 pb-5">
           <PageHeading>League Table</PageHeading>
           <Subheading>Season {season} standings</Subheading>

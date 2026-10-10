@@ -35,14 +35,14 @@ export default function SeasonSummaryScreen() {
     (standing) => standing.clubId === managerTeamId,
   );
 
-  const handlePlayAgain = () => {
+  const handleNextSeason = () => {
     dispatch(startNextSeason());
     router.replace("/");
   };
 
   return (
     <Layout>
-      <View className="w-full max-w-5xl flex-1 py-8">
+      <View className="w-full max-w-5xl py-8">
         <View className="mb-6 border-b border-slate-800 pb-6">
           <PageHeading>Season Complete</PageHeading>
           <Subheading>Season {season} final standings</Subheading>
@@ -63,10 +63,10 @@ export default function SeasonSummaryScreen() {
             </Text>
           ) : null}
           <Pressable
-            onPress={handlePlayAgain}
+            onPress={handleNextSeason}
             className="mt-6 self-start rounded-md bg-emerald-700 px-5 py-3 active:bg-emerald-600"
           >
-            <Text className="font-semibold text-white">Play Again</Text>
+            <Text className="font-semibold text-white">Next Season</Text>
           </Pressable>
         </View>
 

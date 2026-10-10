@@ -1,14 +1,14 @@
 import { firstNames } from "@/static/firstNameList";
 import { lastNames } from "@/static/lastNameList";
 import { Player, Position } from "@/types/player";
-import { v4 as uuidv4 } from "uuid";
+import * as Crypto from "expo-crypto";
 
 export const generatePlayer = (position: Position): Player => {
   //generate name
   const generatedName = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
 
   return {
-    id: uuidv4(),
+    id: Crypto.randomUUID(),
     name: generatedName,
     positionPreference: position,
     Pace: Math.floor(Math.random() * 101),
