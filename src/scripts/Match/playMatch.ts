@@ -1,5 +1,6 @@
 import { store } from "@/store";
 import { getPlayersInClub } from "@/store/clubsSlice";
+import { createEvent } from "@/store/eventSlice";
 import { Match } from "@/types/match";
 import { Pitch } from "@/types/pitch";
 import { generateTeam } from "../Team/generateTeam";
@@ -47,11 +48,13 @@ export const playMatch = (match: Match): Match => {
       matchId: match.id,
       homeGoals,
       awayGoals,
+      turnsInMatch: TOTAL_TURNS,
     });
 
     pitch = turnResult.pitch;
     homeGoals = turnResult.homeGoals;
     awayGoals = turnResult.awayGoals;
+    turnResult.events.forEach((event) => store.dispatch(createEvent(event)));
     pitchHistory.push(clonePitch(pitch));
   }
 

@@ -10,6 +10,7 @@ import type { ThunkAction } from "redux-thunk";
 
 import calendarReducer from "./calenderSlice";
 import clubsReducer from "./clubsSlice";
+import eventsReducer from "./eventSlice";
 import managerReducer from "./managerSlice";
 import matchesReducer from "./matchesSlice";
 import playersReducer from "./playersSlice";
@@ -17,6 +18,7 @@ import playersReducer from "./playersSlice";
 const appReducer = combineReducers({
   calendar: calendarReducer,
   clubs: clubsReducer,
+  events: eventsReducer,
   matches: matchesReducer,
   players: playersReducer,
   manager: managerReducer,

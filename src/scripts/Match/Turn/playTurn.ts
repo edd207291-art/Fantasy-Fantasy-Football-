@@ -1,4 +1,5 @@
 import type { generateTeam } from "@/scripts/Team/generateTeam";
+import { EventType, type Event } from "@/types/event";
 import { Pitch } from "@/types/pitch";
 import { Player, Position } from "@/types/player";
 import { activatePlayer } from "./activatePlayer";
@@ -71,6 +72,7 @@ export const playTurn = ({
   matchId,
   homeGoals,
   awayGoals,
+  turnsInMatch,
 }: {
   pitch: Pitch;
   homeClubTeam: GeneratedTeam;
@@ -79,16 +81,19 @@ export const playTurn = ({
   matchId: string;
   homeGoals: number;
   awayGoals: number;
+  turnsInMatch: number;
 }): {
   pitch: Pitch;
   homeGoals: number;
   awayGoals: number;
+  events: Event[];
 } => {
   const currentTurn = turn + 1;
   console.log(`Match ${matchId} - Turn ${currentTurn}`);
   const homeClubPlayers = getTeamPlayers(homeClubTeam);
   const awayClubPlayers = getTeamPlayers(awayClubTeam);
   let nextPitch = pitch;
+  const events: Event[] = [];
   const playerCycle = getPlayerTurnOrder(homeClubTeam, awayClubTeam);
 
   playerCycle.forEach(({ player, teamSide, position }) => {
@@ -104,6 +109,13 @@ export const playTurn = ({
     nextPitch = activation.pitch;
 
     if (activation.scored) {
+      events.push({
+        playerId: player.id,
+        type: EventType.SCORE_GOAL,
+        matchId,
+        time: Math.round((currentTurn / turnsInMatch) * 90).toString(),
+      });
+
       if (teamSide === "home") {
         homeGoals += 1;
       } else {
@@ -116,5 +128,6 @@ export const playTurn = ({
     pitch: nextPitch,
     homeGoals,
     awayGoals,
+    events,
   };
 };
