@@ -42,7 +42,11 @@ export default function Table<T>({
       horizontal
       className="w-full pb-4"
       showsHorizontalScrollIndicator={true}
-      contentContainerStyle={{ alignItems: "flex-start" }}
+      contentContainerStyle={{
+        alignItems: "flex-start",
+        flexGrow: 1,
+        justifyContent: "center",
+      }}
     >
       <View
         className="overflow-hidden rounded-lg border border-slate-700"

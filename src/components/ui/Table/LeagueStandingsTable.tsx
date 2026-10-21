@@ -1,7 +1,7 @@
 import Table, { type TableColumn } from "@/components/ui/Table/Table";
 import type { LeagueStanding } from "@/scripts/League/getLeagueStandings";
 import { useRouter } from "expo-router";
-import { Text } from "react-native";
+import { Text, useWindowDimensions } from "react-native";
 
 const COLUMNS: TableColumn[] = [
   { key: "rank", label: "#", width: 25 },
@@ -24,10 +24,19 @@ export default function LeagueStandingsTable({
   highlightedClubId,
 }: LeagueStandingsTableProps) {
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const columns = COLUMNS.map((column) =>
+    column.key === "clubName" && width >= 768
+      ? {
+          ...column,
+          width: 200,
+        }
+      : column,
+  );
 
   return (
     <Table
-      columns={COLUMNS}
+      columns={columns}
       data={standings}
       emptyMessage="No clubs in this league yet."
       getRowKey={(standing) => standing.clubId}
