@@ -105,7 +105,7 @@ export default function HomeLeaguePage() {
 
   return (
     <>
-      <View className="w-full max-w-4xl">
+      <View className="w-full max-w-4xl pb-8">
         <PageHeading className="mb-2">Home Page</PageHeading>
         <BodyText className="mb-4">
           Season {season} - Current Week {week}

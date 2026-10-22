@@ -1,5 +1,6 @@
 import Table from "@/components/ui/Table/Table";
 import type { Player } from "@/types/player";
+import { useRouter } from "expo-router";
 import { Text } from "react-native";
 
 type PlayersTableProps = {
@@ -7,6 +8,8 @@ type PlayersTableProps = {
 };
 
 export default function PlayersTable({ players }: PlayersTableProps) {
+  const router = useRouter();
+
   return (
     <Table
       columns={[
@@ -22,6 +25,9 @@ export default function PlayersTable({ players }: PlayersTableProps) {
       data={players}
       verticalScroll={false}
       getRowKey={(player: Player) => player.id}
+      onRowPress={(player) =>
+        router.push({ pathname: "/player", params: { id: player.id } })
+      }
       renderCell={(player: Player, column: { key: string }) => {
         let tableText: string | number = "";
         switch (column.key) {
@@ -32,22 +38,22 @@ export default function PlayersTable({ players }: PlayersTableProps) {
             tableText = player.positionPreference;
             break;
           case "Defending":
-            tableText = player.Defending;
+            tableText = player.attributes.Defending;
             break;
           case "Dribbling":
-            tableText = player.Dribbling;
+            tableText = player.attributes.Dribbling;
             break;
           case "Pace":
-            tableText = player.Pace;
+            tableText = player.attributes.Pace;
             break;
           case "Passing":
-            tableText = player.Passing;
+            tableText = player.attributes.Passing;
             break;
           case "Physical":
-            tableText = player.Physical;
+            tableText = player.attributes.Physical;
             break;
           case "Shooting":
-            tableText = player.Shooting;
+            tableText = player.attributes.Shooting;
             break;
           default:
             break;

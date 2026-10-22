@@ -79,7 +79,7 @@ export const passBall = (
     passerZone.coordinates,
     receiverZone.coordinates,
   );
-  const passerRoll = performCheck(passer.Passing);
+  const passerRoll = performCheck(passer.attributes.Passing);
   const passSuccess = passerRoll >= 0;
   const targetZone = { ...receiverZone.coordinates };
 
@@ -98,7 +98,7 @@ export const passBall = (
     ballZone = getRandomOffset(targetZone, LONG_PASS_OFF_SET, pitch);
   }
 
-  const receiverRoll = performCheck(receiver.Pace);
+  const receiverRoll = performCheck(receiver.attributes.Pace);
   let receiverLandingZone = { ...receiverZone.coordinates };
   let receiverGetsBall = false;
 

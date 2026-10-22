@@ -36,7 +36,10 @@ export const tackle = (
   );
 
   //do check
-  const comparison = versusCheck(attacker.Defending, defender.Defending);
+  const comparison = versusCheck(
+    attacker.attributes.Defending,
+    defender.attributes.Defending,
+  );
 
   const winner = comparison > 0 ? "attacker" : "defender";
   const attackerGetsBall = winner === "attacker";

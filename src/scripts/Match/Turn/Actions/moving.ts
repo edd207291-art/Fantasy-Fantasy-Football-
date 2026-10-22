@@ -91,7 +91,7 @@ const resolveDribble = (
     return pitch;
   }
 
-  const dribbleSuccess = performCheck(player.Dribbling) >= 0;
+  const dribbleSuccess = performCheck(player.attributes.Dribbling) >= 0;
   const ballDestination = dribbleSuccess
     ? movedTo
     : getRandomOffset(movedTo, 1, pitch);
@@ -105,7 +105,8 @@ export const movePlayer = (
   fromZone: PitchZone,
   toZone: PitchZone,
 ): MoveOutcome => {
-  const maxDistance = performCheck(player.Pace) >= 0 ? FAST_MOVE : FREE_MOVE;
+  const maxDistance =
+    performCheck(player.attributes.Pace) >= 0 ? FAST_MOVE : FREE_MOVE;
   const closestZone = findClosestReachableZone(
     pitch,
     fromZone.coordinates,

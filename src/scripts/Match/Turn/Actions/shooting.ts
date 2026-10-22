@@ -16,8 +16,8 @@ export const shootBall = (
 ): ShotOutcome => {
   let newPitch = [...pitch];
 
-  const shooterRoll = shooter.Shooting;
-  const goalkeeperRoll = goalkeeper.Defending;
+  const shooterRoll = shooter.attributes.Shooting;
+  const goalkeeperRoll = goalkeeper.attributes.Defending;
   const totalRoll = versusCheck(shooterRoll, goalkeeperRoll);
 
   const scored = totalRoll > 0;
