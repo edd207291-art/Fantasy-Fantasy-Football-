@@ -6,6 +6,7 @@ import {
 } from "@/types/lineup";
 import { Player, Position } from "@/types/player";
 import { ITeam } from "@/types/team";
+import { createTeamPlayers } from "./createTeamPlayers";
 import { getTeamFromLineup } from "./getTeamFromLineup";
 
 type FormationResult = {
@@ -124,11 +125,11 @@ export const generateTeam = (
 
   return {
     formation: bestFormation.name,
-    teamPlayers: {
-      Goalkeeper: bestGoalkeeper,
-      Defenders: bestFormation.result.players.defenders,
-      Midfielders: bestFormation.result.players.midfielders,
-      Forwards: bestFormation.result.players.forwards,
-    },
+    teamPlayers: createTeamPlayers({
+      goalkeeper: bestGoalkeeper,
+      defenders: bestFormation.result.players.defenders,
+      midfielders: bestFormation.result.players.midfielders,
+      forwards: bestFormation.result.players.forwards,
+    }),
   };
 };

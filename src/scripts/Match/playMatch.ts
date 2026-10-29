@@ -1,19 +1,33 @@
 import { store } from "@/store";
 import { getPlayersInClub } from "@/store/clubsSlice";
 import { createEvent } from "@/store/eventSlice";
-import { Match } from "@/types/match";
-import { Pitch } from "@/types/pitch";
+import type { Match, MatchPitchState } from "@/types/match";
+import type { Pitch } from "@/types/pitch";
 import { generateTeam } from "../Team/generateTeam";
 import { setUpPitchForMatch } from "./Pitch/setUpPitchForMatch";
 import { playTurn } from "./Turn/playTurn";
 
-const clonePitch = (pitch: Pitch): Pitch =>
-  pitch.map((row) =>
-    row.map((zone) => ({
-      ...zone,
-      coordinates: { ...zone.coordinates },
-    })),
-  );
+const snapshotPitch = (pitch: Pitch): MatchPitchState => {
+  const players: MatchPitchState["players"] = [];
+  let ballLocation: MatchPitchState["ballLocation"] = null;
+
+  pitch.forEach((row) => {
+    row.forEach((zone) => {
+      if (zone.playerId) {
+        players.push({
+          playerId: zone.playerId,
+          location: { ...zone.coordinates },
+        });
+      }
+
+      if (zone.containsBall) {
+        ballLocation = { ...zone.coordinates };
+      }
+    });
+  });
+
+  return { players, ballLocation };
+};
 
 const TOTAL_TURNS = 500;
 
@@ -35,7 +49,7 @@ export const playMatch = (match: Match): Match => {
   );
 
   let pitch = setUpPitchForMatch(homeClubTeam, awayClubTeam).pitch;
-  const pitchHistory: Pitch[] = [clonePitch(pitch)];
+  const pitchHistory: MatchPitchState[] = [snapshotPitch(pitch)];
   let homeGoals = 0;
   let awayGoals = 0;
 
@@ -55,7 +69,7 @@ export const playMatch = (match: Match): Match => {
     homeGoals = turnResult.homeGoals;
     awayGoals = turnResult.awayGoals;
     turnResult.events.forEach((event) => store.dispatch(createEvent(event)));
-    pitchHistory.push(clonePitch(pitch));
+    pitchHistory.push(snapshotPitch(pitch));
   }
 
   const score = { home: homeGoals, away: awayGoals };
@@ -77,7 +91,7 @@ export const playMatch = (match: Match): Match => {
     result: {
       winnerClubId,
       score,
-      // pitchStates: pitchHistory,
+      pitchStates: pitchHistory,
     },
   };
 };

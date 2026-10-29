@@ -15,9 +15,10 @@ export const generatePlayer = (position: Position): Player => {
       Pace: Math.floor(Math.random() * 101),
       Shooting: Math.floor(Math.random() * 101),
       Passing: Math.floor(Math.random() * 101),
-      Dribbling: Math.floor(Math.random() * 101),
+      Dribbling: Math.floor(Math.random() * 51) + 50,
       Defending: Math.floor(Math.random() * 101),
       Physical: Math.floor(Math.random() * 101),
+      Discipline: Math.floor(Math.random() * 101),
     },
   };
 };

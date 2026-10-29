@@ -1,13 +1,42 @@
 import Layout from "@/components/ui/Layout";
 import { ButtonText, PageHeading } from "@/components/ui/Typography";
-import { PITCH_LENGTH, PITCH_WIDTH } from "@/scripts/Match/Pitch/createPitch";
+import {
+  createPitch,
+  PITCH_LENGTH,
+  PITCH_WIDTH,
+} from "@/scripts/Match/Pitch/createPitch";
 import { setUpPitchForMatch } from "@/scripts/Match/Pitch/setUpPitchForMatch";
 import { generateTeam } from "@/scripts/Team/generateTeam";
 import { useAppSelector } from "@/store/hooks";
+import type { MatchPitchState } from "@/types/match";
+import type { Pitch } from "@/types/pitch";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import "../global.css";
+
+const buildPitchFromState = (state: MatchPitchState): Pitch => {
+  const playerIdsByLocation = new Map(
+    state.players.map(({ playerId, location }) => [
+      `${location.x},${location.y}`,
+      playerId,
+    ]),
+  );
+
+  return createPitch().map((row) =>
+    row.map((zone) => {
+      const locationKey = `${zone.coordinates.x},${zone.coordinates.y}`;
+
+      return {
+        ...zone,
+        playerId: playerIdsByLocation.get(locationKey),
+        containsBall:
+          state.ballLocation?.x === zone.coordinates.x &&
+          state.ballLocation.y === zone.coordinates.y,
+      };
+    }),
+  );
+};
 
 export default function MatchViewerScreen() {
   const { matchId } = useLocalSearchParams<{ matchId: string }>();
@@ -46,7 +75,9 @@ export default function MatchViewerScreen() {
     }
 
     if (previewMode === "turns" && pitchStates.length) {
-      return pitchStates[turnIndex] ?? pitchStates[pitchStates.length - 1];
+      const state =
+        pitchStates[turnIndex] ?? pitchStates[pitchStates.length - 1];
+      return buildPitchFromState(state);
     }
 
     const homeClub = clubs.find((club) => club.id === previewMatch.homeClubId);

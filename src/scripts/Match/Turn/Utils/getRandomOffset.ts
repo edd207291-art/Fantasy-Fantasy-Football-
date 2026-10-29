@@ -1,3 +1,4 @@
+import { ftToZones } from "@/scripts/Utils/ftToZones";
 import { Pitch, PitchCoordinates } from "@/types/pitch";
 
 const clamp = (value: number, min: number, max: number): number =>
@@ -5,11 +6,11 @@ const clamp = (value: number, min: number, max: number): number =>
 
 export const getRandomOffset = (
   target: PitchCoordinates,
-  maxDistance: number,
+  maxDistanceFeet: number,
   pitch: Pitch,
 ): PitchCoordinates => {
   const angle = Math.random() * Math.PI * 2;
-  const radius = Math.random() * maxDistance;
+  const radius = Math.random() * ftToZones(maxDistanceFeet);
   const deltaX = Math.round(Math.cos(angle) * radius);
   const deltaY = Math.round(Math.sin(angle) * radius);
   const maxX = pitch[0]?.length ?? 0;

@@ -52,20 +52,20 @@ export const setManagerTeamId =
     const clubPlayers = getPlayersInClub(getState(), teamId);
     const generatedTeam =
       clubPlayers.length > 0 ? generateTeam(clubPlayers) : undefined;
-    const goalkeeper = generatedTeam?.teamPlayers.Goalkeeper;
+    const goalkeeper = generatedTeam?.teamPlayers.Goalkeeper.player;
     const lineup: ManagerLineup | undefined =
       generatedTeam && goalkeeper
         ? {
             formation: generatedTeam.formation,
             goalkeeperId: goalkeeper.id,
             defendersIds: generatedTeam.teamPlayers.Defenders.map(
-              (player) => player.id,
+              ({ player }) => player.id,
             ),
             midfieldersIds: generatedTeam.teamPlayers.Midfielders.map(
-              (player) => player.id,
+              ({ player }) => player.id,
             ),
             forwardsIds: generatedTeam.teamPlayers.Forwards.map(
-              (player) => player.id,
+              ({ player }) => player.id,
             ),
           }
         : undefined;

@@ -1,7 +1,7 @@
 import { Pitch, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
-import { movePlayer } from "./Actions/moving";
-import { getDistanceInSquares } from "./Utils/getDistanceInSquares";
+import { movePlayer } from "./Actions/Moving/movePlayer";
+import { getDistanceInZones } from "./Utils/getDistanceInZones";
 import { ActivationResult } from "./activatePlayer";
 
 //to and stay in own goal area
@@ -33,8 +33,8 @@ export const goalkeeperAction = ({
     )
     .sort(
       (first, second) =>
-        getDistanceInSquares(activePlayerZone.coordinates, first.coordinates) -
-        getDistanceInSquares(activePlayerZone.coordinates, second.coordinates),
+        getDistanceInZones(activePlayerZone.coordinates, first.coordinates) -
+        getDistanceInZones(activePlayerZone.coordinates, second.coordinates),
     )[0];
 
   if (!goalAreaTargetZone) {

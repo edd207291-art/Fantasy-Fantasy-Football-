@@ -1,66 +1,86 @@
-import type { generateTeam } from "@/scripts/Team/generateTeam";
 import { EventType, type Event } from "@/types/event";
-import { Pitch } from "@/types/pitch";
+import { Pitch, PitchCoordinates } from "@/types/pitch";
 import { Player, Position } from "@/types/player";
+import { ITeam } from "@/types/team";
 import { activatePlayer } from "./activatePlayer";
 
-type GeneratedTeam = ReturnType<typeof generateTeam>;
 type PlayerActivation = {
   player: Player;
   teamSide: "home" | "away";
   position: Position;
+  restingCoordinates: PitchCoordinates;
 };
 
-const getTeamPlayers = (team: GeneratedTeam): Player[] => [
-  team.teamPlayers.Goalkeeper,
-  ...team.teamPlayers.Defenders,
-  ...team.teamPlayers.Midfielders,
-  ...team.teamPlayers.Forwards,
+const getTeamPlayers = (team: ITeam): Player[] => [
+  team.teamPlayers.Goalkeeper.player,
+  ...team.teamPlayers.Defenders.map(({ player }) => player),
+  ...team.teamPlayers.Midfielders.map(({ player }) => player),
+  ...team.teamPlayers.Forwards.map(({ player }) => player),
 ];
 
 const getPlayerTurnOrder = (
-  homeClubTeam: GeneratedTeam,
-  awayClubTeam: GeneratedTeam,
+  homeClubTeam: ITeam,
+  awayClubTeam: ITeam,
 ): PlayerActivation[] => [
-  ...homeClubTeam.teamPlayers.Defenders.map((player) => ({
-    player,
-    teamSide: "home" as const,
-    position: Position.Defender,
-  })),
-  ...homeClubTeam.teamPlayers.Midfielders.map((player) => ({
-    player,
-    teamSide: "home" as const,
-    position: Position.Midfielder,
-  })),
-  ...homeClubTeam.teamPlayers.Forwards.map((player) => ({
-    player,
-    teamSide: "home" as const,
-    position: Position.Forward,
-  })),
+  ...homeClubTeam.teamPlayers.Defenders.map(
+    ({ player, restingCoordinates }) => ({
+      player,
+      teamSide: "home" as const,
+      position: Position.Defender,
+      restingCoordinates,
+    }),
+  ),
+  ...homeClubTeam.teamPlayers.Midfielders.map(
+    ({ player, restingCoordinates }) => ({
+      player,
+      teamSide: "home" as const,
+      position: Position.Midfielder,
+      restingCoordinates,
+    }),
+  ),
+  ...homeClubTeam.teamPlayers.Forwards.map(
+    ({ player, restingCoordinates }) => ({
+      player,
+      teamSide: "home" as const,
+      position: Position.Forward,
+      restingCoordinates: restingCoordinates,
+    }),
+  ),
   {
-    player: homeClubTeam.teamPlayers.Goalkeeper,
+    player: homeClubTeam.teamPlayers.Goalkeeper.player,
     teamSide: "home",
     position: Position.Goalkeeper,
+    restingCoordinates: homeClubTeam.teamPlayers.Goalkeeper.restingCoordinates,
   },
-  ...awayClubTeam.teamPlayers.Defenders.map((player) => ({
-    player,
-    teamSide: "away" as const,
-    position: Position.Defender,
-  })),
-  ...awayClubTeam.teamPlayers.Midfielders.map((player) => ({
-    player,
-    teamSide: "away" as const,
-    position: Position.Midfielder,
-  })),
-  ...awayClubTeam.teamPlayers.Forwards.map((player) => ({
-    player,
-    teamSide: "away" as const,
-    position: Position.Forward,
-  })),
+  ...awayClubTeam.teamPlayers.Defenders.map(
+    ({ player, restingCoordinates: restingCoordinates }) => ({
+      player,
+      teamSide: "away" as const,
+      position: Position.Defender,
+      restingCoordinates,
+    }),
+  ),
+  ...awayClubTeam.teamPlayers.Midfielders.map(
+    ({ player, restingCoordinates }) => ({
+      player,
+      teamSide: "away" as const,
+      position: Position.Midfielder,
+      restingCoordinates,
+    }),
+  ),
+  ...awayClubTeam.teamPlayers.Forwards.map(
+    ({ player, restingCoordinates }) => ({
+      player,
+      teamSide: "away" as const,
+      position: Position.Forward,
+      restingCoordinates,
+    }),
+  ),
   {
-    player: awayClubTeam.teamPlayers.Goalkeeper,
+    player: awayClubTeam.teamPlayers.Goalkeeper.player,
     teamSide: "away",
     position: Position.Goalkeeper,
+    restingCoordinates: awayClubTeam.teamPlayers.Goalkeeper.restingCoordinates,
   },
 ];
 
@@ -75,8 +95,8 @@ export const playTurn = ({
   turnsInMatch,
 }: {
   pitch: Pitch;
-  homeClubTeam: GeneratedTeam;
-  awayClubTeam: GeneratedTeam;
+  homeClubTeam: ITeam;
+  awayClubTeam: ITeam;
   turn: number;
   matchId: string;
   homeGoals: number;
@@ -96,7 +116,15 @@ export const playTurn = ({
   const events: Event[] = [];
   const playerCycle = getPlayerTurnOrder(homeClubTeam, awayClubTeam);
 
-  playerCycle.forEach(({ player, teamSide, position }) => {
+  playerCycle.forEach(({ player, teamSide, position, restingCoordinates }) => {
+    const playerRestingCoordinates = {
+      x: restingCoordinates.x,
+      y:
+        teamSide === "home"
+          ? restingCoordinates.y
+          : nextPitch.length - 1 - restingCoordinates.y,
+    };
+
     const activation = activatePlayer(
       nextPitch,
       player,
@@ -104,6 +132,7 @@ export const playTurn = ({
       homeClubPlayers,
       awayClubPlayers,
       position,
+      playerRestingCoordinates,
     );
 
     nextPitch = activation.pitch;

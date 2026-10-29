@@ -1,6 +1,7 @@
 import { LINEUP_FORMATIONS, ManagerLineup } from "@/types/lineup";
 import { Player } from "@/types/player";
 import { ITeam } from "@/types/team";
+import { createTeamPlayers } from "./createTeamPlayers";
 
 export const getTeamFromLineup = (
   clubPlayers: Player[],
@@ -44,12 +45,12 @@ export const getTeamFromLineup = (
   ) {
     return {
       formation: lineup.formation,
-      teamPlayers: {
-        Goalkeeper: goalkeeper,
-        Defenders: defenders,
-        Midfielders: midfielders,
-        Forwards: forwards,
-      },
+      teamPlayers: createTeamPlayers({
+        goalkeeper,
+        defenders,
+        midfielders,
+        forwards,
+      }),
     };
   }
 

@@ -30,10 +30,19 @@ export default function BestTeamCard({ players }: BestTeamCardProps) {
 
   const { formation, teamPlayers } = generateTeam(players);
   const groups: TeamPlayerGroup[] = [
-    { label: "Goalkeeper", players: [teamPlayers.Goalkeeper] },
-    { label: "Defenders", players: teamPlayers.Defenders },
-    { label: "Midfielders", players: teamPlayers.Midfielders },
-    { label: "Forwards", players: teamPlayers.Forwards },
+    { label: "Goalkeeper", players: [teamPlayers.Goalkeeper.player] },
+    {
+      label: "Defenders",
+      players: teamPlayers.Defenders.map(({ player }) => player),
+    },
+    {
+      label: "Midfielders",
+      players: teamPlayers.Midfielders.map(({ player }) => player),
+    },
+    {
+      label: "Forwards",
+      players: teamPlayers.Forwards.map(({ player }) => player),
+    },
   ];
 
   return (

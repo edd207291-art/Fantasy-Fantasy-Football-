@@ -1,9 +1,8 @@
-import { getRoundedNumber } from "@/scripts/Utils/rounding";
-import { FT_IN_ZONE } from "@/static/GlobalVars";
+import { ftToZones } from "@/scripts/Utils/ftToZones";
 import { Pitch, PitchCoordinates, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
 import { performCheck } from "../../Checks/performCheck";
-import { getDistanceInSquares } from "../Utils/getDistanceInSquares";
+import { getDistanceInZones } from "../Utils/getDistanceInZones";
 import { getRandomOffset } from "../Utils/getRandomOffset";
 import { moveTowardCoordinate } from "../Utils/moveTowardCoordinate";
 
@@ -24,16 +23,16 @@ export type PassOutcome = {
   newPitch: Pitch;
 };
 
-const SHORT_PASS = getRoundedNumber(45 / FT_IN_ZONE);
-const MID_PASS = getRoundedNumber(90 / FT_IN_ZONE);
-const SHORT_PASS_MISS_DISTANCE = getRoundedNumber(15 / FT_IN_ZONE);
-const OTHER_PASS_MISS_DISTANCE = getRoundedNumber(30 / FT_IN_ZONE);
+const SHORT_PASS = ftToZones(45);
+const MID_PASS = ftToZones(90);
+const SHORT_PASS_MISS_DISTANCE_FEET = 15;
+const OTHER_PASS_MISS_DISTANCE_FEET = 30;
 
 export const getPassRange = (
   from: PitchCoordinates,
   to: PitchCoordinates,
 ): PassRange => {
-  const distance = getDistanceInSquares(from, to);
+  const distance = getDistanceInZones(from, to);
 
   if (distance <= SHORT_PASS) {
     return "short";
@@ -88,14 +87,14 @@ export const passBall = (
   if (!passSuccess) {
     const missDistance =
       passRange === "short"
-        ? SHORT_PASS_MISS_DISTANCE
-        : OTHER_PASS_MISS_DISTANCE;
+        ? SHORT_PASS_MISS_DISTANCE_FEET
+        : OTHER_PASS_MISS_DISTANCE_FEET;
     ballZone = getRandomOffset(targetZone, missDistance, pitch);
   }
 
-  const LONG_PASS_OFF_SET = getRoundedNumber(15 / FT_IN_ZONE);
+  const LONG_PASS_OFF_SET_FEET = 15;
   if (passRange === "long" && passSuccess) {
-    ballZone = getRandomOffset(targetZone, LONG_PASS_OFF_SET, pitch);
+    ballZone = getRandomOffset(targetZone, LONG_PASS_OFF_SET_FEET, pitch);
   }
 
   const receiverRoll = performCheck(receiver.attributes.Pace);

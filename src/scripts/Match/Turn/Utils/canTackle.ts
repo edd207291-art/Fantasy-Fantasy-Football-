@@ -1,11 +1,10 @@
-import { getRoundedNumber } from "@/scripts/Utils/rounding";
-import { FT_IN_ZONE } from "@/static/GlobalVars";
+import { ftToZones } from "@/scripts/Utils/ftToZones";
 import { Pitch, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
 import { TeamSide } from "../Ballcarrier/ballcarrier";
-import { getDistanceInSquares } from "./getDistanceInSquares";
+import { getDistanceInZones } from "./getDistanceInZones";
 
-const TACKLE_RANGE = getRoundedNumber(15 / FT_IN_ZONE);
+const TACKLE_RANGE = ftToZones(15);
 
 const hasTackleSpace = (
   pitch: Pitch,
@@ -28,7 +27,7 @@ const hasTackleSpace = (
         adjacentZone &&
         (adjacentZone.playerId === undefined ||
           adjacentZone.playerId === attackerId) &&
-        getDistanceInSquares(
+        getDistanceInZones(
           attackerZone.coordinates,
           adjacentZone.coordinates,
         ) <= TACKLE_RANGE
@@ -70,7 +69,7 @@ export const canTackle = ({
   );
   if (
     !ballCarrier ||
-    getDistanceInSquares(activePlayerZone.coordinates, ballZone.coordinates) >
+    getDistanceInZones(activePlayerZone.coordinates, ballZone.coordinates) >
       TACKLE_RANGE ||
     !emptyTackleSpace
   ) {

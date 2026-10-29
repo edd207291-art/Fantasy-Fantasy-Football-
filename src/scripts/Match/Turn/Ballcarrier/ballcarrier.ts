@@ -1,6 +1,6 @@
 import { Pitch, PitchZone } from "@/types/pitch";
 import { Player, Position } from "@/types/player";
-import { movePlayer } from "../Actions/moving";
+import { movePlayer } from "../Actions/Moving/movePlayer";
 import { shootBall } from "../Actions/shooting";
 import { getPlayerZone } from "../Utils/getPlayerZone";
 

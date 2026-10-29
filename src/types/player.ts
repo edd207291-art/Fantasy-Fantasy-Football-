@@ -12,6 +12,7 @@ export type PlayerAttributes = {
   Dribbling: number; // Shows agility, balance, and ball control in tight spaces.
   Defending: number; // Affects tackling success and defensive awareness.
   Physical: number; // Measures jumping, stamina, strength, and aggression.
+  Discipline: number; // Ability to control ones emotions
 };
 
 export type Player = {

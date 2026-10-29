@@ -1,17 +1,16 @@
-import { FT_IN_ZONE } from "@/static/GlobalVars";
 import { Pitch, PitchZone } from "@/types/pitch";
-import { getRoundedNumber, getRoundedOddNumber } from "../../Utils/rounding";
+import { ftToZones } from "../../Utils/ftToZones";
 
-export const PITCH_WIDTH = getRoundedOddNumber(220 / FT_IN_ZONE);
-export const PITCH_LENGTH = getRoundedOddNumber(345 / FT_IN_ZONE);
+export const PITCH_WIDTH = ftToZones(220);
+export const PITCH_LENGTH = ftToZones(345);
 
-const GOAL_WIDTH = getRoundedNumber(25 / FT_IN_ZONE);
-const GOAL_AREA_WIDTH = getRoundedNumber(55 / FT_IN_ZONE);
-const GOAL_AREA_DEPTH = getRoundedNumber(20 / FT_IN_ZONE);
-const PENALTY_AREA_WIDTH = getRoundedNumber(125 / FT_IN_ZONE);
-const PENALTY_AREA_DEPTH = getRoundedNumber(55 / FT_IN_ZONE);
-const CENTER_CIRCLE_RADIUS = getRoundedNumber(30 / FT_IN_ZONE);
-const PENALTY_SPOT_DISTANCE = getRoundedNumber(10 / FT_IN_ZONE);
+const GOAL_WIDTH = ftToZones(25);
+const GOAL_AREA_WIDTH = ftToZones(55);
+const GOAL_AREA_DEPTH = ftToZones(20);
+const PENALTY_AREA_WIDTH = ftToZones(12);
+const PENALTY_AREA_DEPTH = ftToZones(55);
+const CENTER_CIRCLE_RADIUS = ftToZones(30);
+const PENALTY_SPOT_DISTANCE = ftToZones(10);
 
 const isInsideCenteredArea = (
   x: number,

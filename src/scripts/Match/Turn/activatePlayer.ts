@@ -1,10 +1,11 @@
-import { Pitch, PitchZone } from "@/types/pitch";
+import { Pitch, PitchCoordinates, PitchZone } from "@/types/pitch";
 import { Player, Position } from "@/types/player";
-import { movePlayer } from "./Actions/moving";
+import { moving } from "./Actions/moving";
 import { tackle } from "./Actions/tackle";
 import { ballCarrierPlayer, TeamSide } from "./Ballcarrier/ballcarrier";
 import { goalkeeperAction } from "./goalkeeperAction";
 import { canTackle } from "./Utils/canTackle";
+import { getDistanceInZones } from "./Utils/getDistanceInZones";
 
 export type ActivationResult = {
   pitch: Pitch;
@@ -47,6 +48,7 @@ export const activatePlayer = (
   homeClubPlayers: Player[],
   awayClubPlayers: Player[],
   playerPositionInTeam: Position,
+  restingCoordinates: PitchCoordinates,
 ): ActivationResult => {
   const needsBallZone = playerPositionInTeam !== Position.Goalkeeper;
   const { activePlayerZone, ballZone } = findActivationZones(
@@ -108,10 +110,38 @@ export const activatePlayer = (
     return { pitch: tackleResult.newPitch, scored: false };
   }
 
-  //else move player towards ball
+  const pitchZones = pitch.flat();
+  const closestPlayer = (
+    teamSide === "home" ? homeClubPlayers : awayClubPlayers
+  )
+    .filter((teammate) => teammate.positionPreference !== Position.Goalkeeper)
+    .map((teammate) => ({
+      teammate,
+      zone:
+        teammate.id === playerBeingActivated.id
+          ? activePlayerZone
+          : pitchZones.find((zone) => zone.playerId === teammate.id),
+    }))
+    .filter(
+      (candidate): candidate is { teammate: Player; zone: PitchZone } =>
+        candidate.zone !== undefined,
+    )
+    .sort(
+      (first, second) =>
+        getDistanceInZones(first.zone.coordinates, ballZone.coordinates) -
+        getDistanceInZones(second.zone.coordinates, ballZone.coordinates),
+    )[0];
+
   return {
-    pitch: movePlayer(pitch, playerBeingActivated, activePlayerZone, ballZone)
-      .newPitch,
+    pitch: moving(
+      pitch,
+      playerBeingActivated,
+      activePlayerZone,
+      ballZone,
+      restingCoordinates,
+      closestPlayer?.teammate.id === playerBeingActivated.id,
+      teamSide === "home" ? homeClubPlayers : awayClubPlayers,
+    ).newPitch,
     scored: false,
   };
 };

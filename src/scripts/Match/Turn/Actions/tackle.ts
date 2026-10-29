@@ -1,7 +1,7 @@
 import { Pitch, PitchZone } from "@/types/pitch";
 import { Player } from "@/types/player";
 import { versusCheck } from "../../Checks/versusCheck";
-import { movePlayer } from "./moving";
+import { movePlayer } from "./Moving/movePlayer";
 
 export type TackleOutcome = {
   pitch: Pitch;

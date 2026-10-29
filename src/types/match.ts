@@ -1,4 +1,9 @@
-import { Pitch } from "./pitch";
+import type { PitchCoordinates } from "./pitch";
+
+export type MatchPitchState = {
+  players: { playerId: string; location: PitchCoordinates }[];
+  ballLocation: PitchCoordinates | null;
+};
 
 export type MatchScore = {
   home: number;
@@ -12,10 +17,10 @@ export type Match = {
   season: number;
   week: number;
   score?: MatchScore;
-  pitchHistory?: Pitch[];
+  pitchHistory?: MatchPitchState[];
   result?: {
     winnerClubId: string | null;
     score: MatchScore;
-    pitchStates?: Pitch[];
+    pitchStates?: MatchPitchState[];
   };
 };
